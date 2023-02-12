@@ -59,7 +59,7 @@ public class StudentRepositoryTests {
         studentRepository.delete(student);
         assertEquals(1, studentRepository.findAll().size());
     }
-    private Student getStudent() {
+    public static Student getStudent() {
         Student student = new Student();
         student.setFirstName("Василий");
         student.setLastName("Сакович");

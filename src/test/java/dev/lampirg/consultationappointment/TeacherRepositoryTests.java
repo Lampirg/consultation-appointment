@@ -54,7 +54,7 @@ public class TeacherRepositoryTests {
         teacherRepository.delete(teacher);
         assertEquals(1, teacherRepository.findAll().size());
     }
-    private Teacher getTeacher() {
+    public static Teacher getTeacher() {
         Teacher teacher = new Teacher();
         teacher.setFirstName("Сергей");
         teacher.setLastName("Иванов");
