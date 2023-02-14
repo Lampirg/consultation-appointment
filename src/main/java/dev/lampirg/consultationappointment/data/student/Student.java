@@ -16,6 +16,14 @@ import java.util.Set;
 @NoArgsConstructor
 public class Student extends Person {
 
+    public Student(String firstName, String lastName, String patronymic, String email, String groupName) {
+        setFirstName(firstName);
+        setLastName(lastName);
+        setPatronymic(patronymic);
+        setEmail(email);
+        setGroupName(groupName);
+    }
+
     @NotEmpty
     @Pattern(regexp = "[А-Я]{3}-[0-9]{3}")
     private String groupName;
