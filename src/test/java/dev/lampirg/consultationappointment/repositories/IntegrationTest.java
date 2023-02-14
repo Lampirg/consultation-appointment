@@ -10,8 +10,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.transaction.TransactionSystemException;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,7 +31,7 @@ public class IntegrationTest {
 
 
     @BeforeEach
-    public void clear() {
+    public void clearAndFill() {
         appointmentRepository.deleteAll();
         studentRepository.deleteAll();
         teacherRepository.deleteAll();
@@ -57,4 +59,19 @@ public class IntegrationTest {
         assertThrows(DataIntegrityViolationException.class, () -> teacherRepository.delete(teacherRepository.findAll().get(0)));
         assertDoesNotThrow(() -> studentRepository.delete(studentRepository.findAll().get(0)));
     }
+
+    @Test
+    public void testIncorrectAppointmentBeforeConsultation() {
+        Appointment appointment = appointmentRepository.findAll().get(0);
+        appointment.setStartTime(LocalDateTime.of(2005, 6, 25, 10, 50));
+        assertThrows(TransactionSystemException.class, () -> appointmentRepository.save(appointment));
+    }
+
+    @Test
+    public void testIncorrectAppointmentAfterConsultation() {
+        Appointment appointment = appointmentRepository.findAll().get(0);
+        appointment.setStartTime(LocalDateTime.of(2005, 6, 25, 15, 20));
+        assertThrows(TransactionSystemException.class, () -> appointmentRepository.save(appointment));
+    }
+
 }
