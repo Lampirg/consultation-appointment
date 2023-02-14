@@ -25,10 +25,10 @@ public class AppointmentRepositoryTests {
     private AppointmentRepository appointmentRepository;
 
     @MockBean
-    private static StudentRepository studentRepository;
+    private StudentRepository studentRepository;
 
     @MockBean
-    private static TeacherRepository teacherRepository;
+    private TeacherRepository teacherRepository;
 
     @BeforeAll
     public void mock() {
@@ -39,18 +39,18 @@ public class AppointmentRepositoryTests {
     @BeforeEach
     public void clearAndAdd() {
         appointmentRepository.deleteAll();
-        appointmentRepository.save(getAppointment());
+        appointmentRepository.save(getAppointment(studentRepository, teacherRepository));
     }
 
     @Test
     public void testFindById() {
-        Appointment appointment = appointmentRepository.save(getAppointment());
+        Appointment appointment = appointmentRepository.save(getAppointment(studentRepository, teacherRepository));
         Appointment result = appointmentRepository.findById(appointment.getId()).get();
         assertEquals(appointment.getId(), result.getId());
         assertEquals(2, appointmentRepository.findAll().size());
     }
 
-    public Appointment getAppointment() {
+    public static Appointment getAppointment(StudentRepository studentRepository, TeacherRepository teacherRepository) {
         Appointment appointment = new Appointment();
         appointment.setStudent(studentRepository.findById(1).get());
         appointment.setTeacher(teacherRepository.findById(1).get());

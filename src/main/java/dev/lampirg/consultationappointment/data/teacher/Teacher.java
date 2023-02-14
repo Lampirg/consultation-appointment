@@ -1,10 +1,8 @@
 package dev.lampirg.consultationappointment.data.teacher;
 
+import dev.lampirg.consultationappointment.data.appointment.Appointment;
 import dev.lampirg.consultationappointment.data.model.Person;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
@@ -18,4 +16,7 @@ public class Teacher extends Person {
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<DatePeriod> datePeriod = new HashSet<>();
+
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER)
+    private Set<Appointment> appointment;
 }
