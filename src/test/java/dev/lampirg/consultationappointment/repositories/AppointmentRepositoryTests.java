@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// TODO: fix these mocking
 @DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AppointmentRepositoryTests {

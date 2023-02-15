@@ -41,7 +41,7 @@ public class IntegrationTest {
         appointment.setTeacher(teacher);
         appointment.setStudent(student);
         appointment.setAppointmentPeriod(teacher.getDatePeriod().stream().toList().get(0));
-        appointment.setStartTime(teacher.getDatePeriod().stream().toList().get(0).getStartTime());
+        appointment.setStartTime(teacher.getDatePeriod().stream().toList().get(0).getStartTime().plusMinutes(15));
         appointment = appointmentRepository.save(appointment);
     }
 
@@ -63,14 +63,18 @@ public class IntegrationTest {
     @Test
     public void testIncorrectAppointmentBeforeConsultation() {
         Appointment appointment = appointmentRepository.findAll().get(0);
-        appointment.setStartTime(LocalDateTime.of(2005, 6, 25, 10, 50));
+        appointment.setStartTime(appointment.getAppointmentPeriod().getStartTime().minusMinutes(25));
         assertThrows(TransactionSystemException.class, () -> appointmentRepository.save(appointment));
+        appointment.setStartTime(appointment.getAppointmentPeriod().getStartTime());
+        assertDoesNotThrow(() -> appointmentRepository.save(appointment));
     }
 
     @Test
     public void testIncorrectAppointmentAfterConsultation() {
         Appointment appointment = appointmentRepository.findAll().get(0);
-        appointment.setStartTime(LocalDateTime.of(2005, 6, 25, 15, 20));
+        appointment.setStartTime(appointment.getAppointmentPeriod().getEndTime().plusMinutes(25));
+        assertThrows(TransactionSystemException.class, () -> appointmentRepository.save(appointment));
+        appointment.setStartTime(appointment.getAppointmentPeriod().getEndTime());
         assertThrows(TransactionSystemException.class, () -> appointmentRepository.save(appointment));
     }
 
