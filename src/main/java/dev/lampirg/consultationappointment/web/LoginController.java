@@ -22,6 +22,12 @@ public class LoginController {
         return "login";
     }
 
+    @GetMapping("/student/logout")
+    public String studentLogout(Model model) {
+        model.addAttribute("logout", "/student/logout");
+        return "logout";
+    }
+
     @GetMapping("/teacher/login")
     public String teacherLogin(Model model) {
         model.addAttribute("login", "/teacher/login");
