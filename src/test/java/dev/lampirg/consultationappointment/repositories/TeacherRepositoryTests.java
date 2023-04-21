@@ -20,7 +20,6 @@ public class TeacherRepositoryTests {
     @BeforeEach
     public void clearAndAdd() {
         teacherRepository.deleteAll();
-        teacherRepository.save(getTeacher());
     }
 
     @Test
@@ -37,7 +36,7 @@ public class TeacherRepositoryTests {
     @Test
     public void testFindAll() {
         Teacher teacher = teacherRepository.save(getTeacher());
-        assertEquals(2, teacherRepository.findAll().size());
+        assertEquals(1, teacherRepository.findAll().size());
     }
     @Test
     public void testSave() {
@@ -51,7 +50,7 @@ public class TeacherRepositoryTests {
     public void testDelete() {
         Teacher teacher = teacherRepository.save(getTeacher());
         teacherRepository.delete(teacher);
-        assertEquals(1, teacherRepository.findAll().size());
+        assertEquals(0, teacherRepository.findAll().size());
     }
     public static Teacher getTeacher() {
         Teacher teacher = new Teacher();
