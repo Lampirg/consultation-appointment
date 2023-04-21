@@ -13,8 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.TransactionSystemException;
 
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -40,8 +38,8 @@ public class IntegrationTest {
         Appointment appointment = new Appointment();
         appointment.setTeacher(teacher);
         appointment.setStudent(student);
-        appointment.setAppointmentPeriod(teacher.getDatePeriod().stream().toList().get(0));
-        appointment.setStartTime(teacher.getDatePeriod().stream().toList().get(0).getStartTime().plusMinutes(15));
+        appointment.setAppointmentPeriod(teacher.getDatePeriods().stream().toList().get(0));
+        appointment.setStartTime(teacher.getDatePeriods().stream().toList().get(0).getStartTime().plusMinutes(15));
         appointment = appointmentRepository.save(appointment);
     }
 

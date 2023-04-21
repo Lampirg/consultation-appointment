@@ -55,8 +55,8 @@ public class AppointmentRepositoryTests {
         Appointment appointment = new Appointment();
         appointment.setStudent(studentRepository.findById(1).get());
         appointment.setTeacher(teacherRepository.findById(1).get());
-        appointment.setAppointmentPeriod(teacherRepository.findById(1).get().getDatePeriod().stream().toList().get(0));
-        appointment.setStartTime(teacherRepository.findById(1).get().getDatePeriod().stream().toList().get(0).getStartTime());
+        appointment.setAppointmentPeriod(teacherRepository.findById(1).get().getDatePeriods().stream().toList().get(0));
+        appointment.setStartTime(teacherRepository.findById(1).get().getDatePeriods().stream().toList().get(0).getStartTime());
         return appointment;
     }
 
