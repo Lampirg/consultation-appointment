@@ -71,8 +71,10 @@ public class SecurityConfig {
                     .permitAll()
                     .and()
                 .logout()
-                .logoutUrl("/student/logout")
-                .and().httpBasic();
+                    .logoutUrl("/student/logout")
+                    .logoutSuccessUrl("/student/login")
+                    .and()
+                .httpBasic();
         // @formatter:on
         return http.build();
     }
