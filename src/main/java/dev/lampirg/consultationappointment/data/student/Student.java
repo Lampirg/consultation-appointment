@@ -3,10 +3,16 @@ package dev.lampirg.consultationappointment.data.student;
 import dev.lampirg.consultationappointment.data.appointment.Appointment;
 import dev.lampirg.consultationappointment.data.model.Person;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,12 +22,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class Student extends Person {
 
-    public Student(String firstName, String lastName, String patronymic, String email, String groupName) {
-        setFirstName(firstName);
-        setLastName(lastName);
-        setPatronymic(patronymic);
-        setEmail(email);
-        setGroupName(groupName);
+    public Student(@NotEmpty String firstName, @NotEmpty String lastName, String patronymic, @Email String email, String password, String groupName) {
+        super(firstName, lastName, patronymic, email, password);
+        this.groupName = groupName;
     }
 
     @NotEmpty
@@ -30,4 +33,9 @@ public class Student extends Person {
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Appointment> appointment;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_STUDENT"));
+    }
 }
