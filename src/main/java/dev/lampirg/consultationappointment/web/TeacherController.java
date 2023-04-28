@@ -34,6 +34,16 @@ public class TeacherController {
         modelAndView.addObject("appointments", appointments);
         return modelAndView;
     }
+
+    @GetMapping("/teachers/{id}/add")
+    public ModelAndView openAddConsultationPage(@PathVariable("id") int id,
+                                                @AuthenticationPrincipal Student student) {
+        ModelAndView modelAndView = new ModelAndView("add-consultation");
+        Teacher teacher = teacherRepository.findById(id)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        modelAndView.addObject(teacher);
+        return modelAndView;
+    }
     }
 
     @GetMapping
