@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class Student extends Person {
     private String groupName;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private Set<Appointment> appointment;
+    private Set<Appointment> appointment = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
