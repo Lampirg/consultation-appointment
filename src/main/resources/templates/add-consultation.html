@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Записаться на консультацию</title>
+</head>
+<body>
+<h>Выберите день консультации</h>
+<table class="table table-striped">
+    <tr>
+        <th>Дата</th>
+        <th>Начало</th>
+        <th>Конец</th>
+    </tr>
+    <tr th:each="datePeriod : ${teacher.datePeriods}">
+        <td th:text="${#temporals.format(datePeriod.startTime, 'dd.MM.yy')}"></td>
+        <td th:text="${#temporals.format(datePeriod.startTime, 'hh:mm')}"></td>
+        <td th:text="${#temporals.format(datePeriod.endTime, 'hh:mm')}"></td>
+        <td>
+            <form action="" method="post">
+                <button type="submit">Назначит консультацию</button>
+            </form>
+        </td>
+    </tr>
+
+</table>
+</body>
+</html>
