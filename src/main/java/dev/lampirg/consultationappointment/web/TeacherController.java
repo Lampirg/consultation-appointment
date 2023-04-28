@@ -23,6 +23,17 @@ public class TeacherController {
     @Autowired
     public TeacherController(TeacherRepository teacherRepository) {
         this.teacherRepository = teacherRepository;
+    @GetMapping("/teachers/{id}")
+    public ModelAndView openTeacherPage(@PathVariable("id") int id, @AuthenticationPrincipal Student student) {
+        ModelAndView modelAndView = new ModelAndView("teacher-details");
+        Teacher teacher = teacherRepository.findById(id)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        modelAndView.addObject(teacher);
+        Set<Appointment> appointments = new HashSet<>(student.getAppointment());
+        appointments.retainAll(teacher.getAppointment());
+        modelAndView.addObject("appointments", appointments);
+        return modelAndView;
+    }
     }
 
     @GetMapping
