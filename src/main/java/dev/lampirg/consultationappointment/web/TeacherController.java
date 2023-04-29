@@ -23,6 +23,13 @@ public class TeacherController {
     @Autowired
     public TeacherController(TeacherRepository teacherRepository) {
         this.teacherRepository = teacherRepository;
+
+    @ModelAttribute("teacher")
+    public Teacher findTeacher(@PathVariable(name = "id", required = false) Integer id) {
+        return id == null ? new Teacher() : teacherRepository.findById(id)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+    }
+
     @GetMapping("/teachers/{id}")
     public ModelAndView openTeacherPage(@PathVariable("id") int id, @AuthenticationPrincipal Student student) {
         ModelAndView modelAndView = new ModelAndView("teacher-details");
@@ -52,8 +59,7 @@ public class TeacherController {
     }
 
     @GetMapping("/teachers/find")
-    public String findTeacher(Model model) {
-        model.addAttribute("teacher", new Teacher());
+    public String findTeacher() {
         return "find-teacher";
     }
 
@@ -73,7 +79,7 @@ public class TeacherController {
         else if (ownersResults.getTotalElements() == 1) {
             // 1 teacher found
             teacher = ownersResults.iterator().next();
-            return "redirect:/teacher/" + teacher.getId();
+            return "redirect:/teachers/" + teacher.getId();
         }
         else {
             // multiple owners found
