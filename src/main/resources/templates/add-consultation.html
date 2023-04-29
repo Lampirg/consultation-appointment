@@ -12,16 +12,19 @@
         <th>Начало</th>
         <th>Конец</th>
     </tr>
-    <tr th:each="datePeriod : ${teacher.datePeriods}">
-        <td th:text="${#temporals.format(datePeriod.startTime, 'dd.MM.yy')}"></td>
-        <td th:text="${#temporals.format(datePeriod.startTime, 'hh:mm')}"></td>
-        <td th:text="${#temporals.format(datePeriod.endTime, 'hh:mm')}"></td>
-        <td>
-            <form action="" method="post">
+    <form th:each="datePeriod : ${teacher.datePeriods}" th:action="@{/teachers/__${teacher.id}__/add}"
+          id="datePeriod" name="datePeriod" method="post">
+        <tr>
+            <td th:text="${#temporals.format(datePeriod.startTime, 'dd.MM.yy')}"></td>
+            <td th:text="${#temporals.format(datePeriod.startTime, 'hh:mm')}"></td>
+            <td th:text="${#temporals.format(datePeriod.endTime, 'hh:mm')}"></td>
+            <td th:text="${datePeriod.id}"></td>
+            <td>
+                <input type="hidden" th:value="*{id}" id="datePeriodId" name="datePeriodId"/>
                 <button type="submit">Назначить консультацию</button>
-            </form>
-        </td>
-    </tr>
+            </td>
+        </tr>
+    </form>
 
 </table>
 </body>
