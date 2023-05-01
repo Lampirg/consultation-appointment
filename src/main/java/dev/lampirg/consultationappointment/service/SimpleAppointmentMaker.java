@@ -3,16 +3,21 @@ package dev.lampirg.consultationappointment.service;
 import dev.lampirg.consultationappointment.data.appointment.Appointment;
 import dev.lampirg.consultationappointment.data.appointment.AppointmentRepository;
 import dev.lampirg.consultationappointment.data.student.Student;
+import dev.lampirg.consultationappointment.data.student.StudentRepository;
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 
 @Service
 public class SimpleAppointmentMaker implements AppointmentMaker {
 
-    public final static int INTERVAL = 15;
+    public final static Duration INTERVAL = Duration.ofMinutes(15);
 
     private AppointmentRepository appointmentRepository;
 
@@ -22,7 +27,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
 
     @Override
     public void makeAppointment(Teacher teacher, Student student, DatePeriod datePeriod) {
-        if (!isAvailable(datePeriod))
+        if (!isAvailable(teacher, student, datePeriod))
             throw new IllegalArgumentException("Not enough time for new appointment");
         Appointment appointment = new Appointment();
         appointment.setStartTime(datePeriod.getStartTime());
@@ -30,15 +35,24 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
         appointment.setStudent(student);
         appointment.setAppointmentPeriod(datePeriod);
         datePeriod.setUnoccupiedTime(
-                datePeriod.getUnoccupiedTime().minus(Duration.ofMinutes(INTERVAL))
+                datePeriod.getUnoccupiedTime().minus(INTERVAL)
         );
-        appointment = appointmentRepository.save(appointment);
-        student.getAppointment().add(appointment);
+        appointmentRepository.saveAndFlush(appointment);
+    }
+
+    @Override
+    public void deleteAppointmentById(Long id) {
+        Appointment appointment = appointmentRepository.findById(id).orElseThrow();
+        appointment.getAppointmentPeriod().setUnoccupiedTime(
+                appointment.getAppointmentPeriod().getUnoccupiedTime().plus(INTERVAL)
+        );
+        appointmentRepository.save(appointment);
+        appointmentRepository.delete(appointment);
     }
 
     @Override
     public boolean isAvailable(DatePeriod datePeriod) {
-        return !datePeriod.getUnoccupiedTime().minus(Duration.ofMinutes(INTERVAL)).isNegative();
+        return !datePeriod.getUnoccupiedTime().minus(INTERVAL).isNegative();
     }
 
     @Override
