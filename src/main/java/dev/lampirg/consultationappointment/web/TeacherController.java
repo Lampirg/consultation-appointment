@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -24,9 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -46,6 +43,15 @@ public class TeacherController {
     public Teacher findTeacher(@PathVariable(name = "id", required = false) Integer id) {
         return id == null ? new Teacher() : teacherRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/student/profile")
+    public String getStudentProfile(@AuthenticationPrincipal Student student, Model model) {
+        model.addAttribute("student", student);
+        List<Appointment> appointments = new ArrayList<>(student.getAppointment());
+        appointments.sort(Comparator.comparing(Appointment::getStartTime));
+        model.addAttribute("appointments", appointments);
+        return "student-profile";
     }
 
     @GetMapping("/teachers/{id}")
@@ -86,7 +92,7 @@ public class TeacherController {
     public String deleteConsultation(@PathVariable Long appointmentId, @PathVariable(required = false) Integer teacherId, @AuthenticationPrincipal Student student) {
         appointmentMaker.deleteAppointmentById(appointmentId);
         if (teacherId == null)
-            return "redirect:/teachers/find";
+            return "redirect:/student/profile";
         return "redirect:/teachers/" + teacherId;
     }
 
