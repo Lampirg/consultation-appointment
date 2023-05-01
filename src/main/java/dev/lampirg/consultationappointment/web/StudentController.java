@@ -15,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +26,13 @@ import java.util.stream.Collectors;
 
 @Controller
 @PreAuthorize("hasRole('STUDENT')")
-public class TeacherController {
+public class StudentController {
 
     private TeacherRepository teacherRepository;
     private AppointmentMaker appointmentMaker;
 
     @Autowired
-    public TeacherController(TeacherRepository teacherRepository, SimpleAppointmentMaker appointmentMaker) {
+    public StudentController(TeacherRepository teacherRepository, SimpleAppointmentMaker appointmentMaker) {
         this.teacherRepository = teacherRepository;
         this.appointmentMaker = appointmentMaker;
     }
