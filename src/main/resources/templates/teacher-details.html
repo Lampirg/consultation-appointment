@@ -30,6 +30,11 @@
     <tr th:each="appointment : ${appointments}">
         <td th:text="${#temporals.format(appointment.appointmentPeriod.startTime, 'dd.MM.yy hh:mm')}"></td>
         <td th:text="${#temporals.format(appointment.appointmentPeriod.endTime, 'dd.MM.yy hh:mm')}"></td>
+        <td>
+            <form th:action="@{/teachers/__${teacher.id}__/delete/__${appointment.id}__}" method="post">
+                <button type="submit">Отменить запись на консультацию</button>
+            </form>
+        </td>
     </tr>
 
 </table>
