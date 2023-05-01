@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+</head>
+<body>
+<h1>Назначенные консультации</h1>
+<table class="table table-striped">
+    <tr>
+        <th>Начало</th>
+        <th>Конец</th>
+        <th>Преподаватель</th>
+    </tr>
+    <tr th:each="appointment : ${appointments}">
+        <td th:text="${#temporals.format(appointment.appointmentPeriod.startTime, 'dd.MM.yy hh:mm')}"></td>
+        <td th:text="${#temporals.format(appointment.appointmentPeriod.endTime, 'dd.MM.yy hh:mm')}"></td>
+        <td th:text="${appointment.teacher.lastName + ' ' + appointment.teacher.firstName + ' ' + appointment.teacher.patronymic}"></td>
+        <td>
+            <form th:action="@{/appointments/__${appointment.id}__/delete}" method="post">
+                <button type="submit">Отменить запись на консультацию</button>
+            </form>
+        </td>
+    </tr>
+
+</table>
+</body>
+</html>
