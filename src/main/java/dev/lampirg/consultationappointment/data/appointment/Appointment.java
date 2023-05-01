@@ -7,6 +7,7 @@ import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.time.LocalDateTime;
@@ -17,10 +18,11 @@ import java.time.LocalDateTime;
 @InTimeBorders
 public class Appointment extends AbstractPersistable<Long> {
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Teacher teacher;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.REPLICATE)
     private Student student;
 
     @ManyToOne
