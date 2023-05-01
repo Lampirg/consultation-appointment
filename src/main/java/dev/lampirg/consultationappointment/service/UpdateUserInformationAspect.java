@@ -20,7 +20,7 @@ public class UpdateUserInformationAspect {
     }
 
 
-    @After("execution(* dev.lampirg.consultationappointment.web.TeacherController.*(..)) && @annotation(org.springframework.web.bind.annotation.PostMapping)")
+    @After("execution(* dev.lampirg.consultationappointment.web.StudentController.*(..)) && @annotation(org.springframework.web.bind.annotation.PostMapping)")
     public void updateUser() {
         Student student = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         student = studentRepository.findById(student.getId()).get();
