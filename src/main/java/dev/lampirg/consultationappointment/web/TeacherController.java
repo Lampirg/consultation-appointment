@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -79,9 +82,12 @@ public class TeacherController {
         return "redirect:/teachers/" + id;
     }
 
-    @GetMapping
-    public String appointment() {
-        return "redirect:/teachers/find";
+    @PostMapping({"/teachers/{teacherId}/delete/{appointmentId}", "/appointments/{appointmentId}/delete"})
+    public String deleteConsultation(@PathVariable Long appointmentId, @PathVariable(required = false) Integer teacherId, @AuthenticationPrincipal Student student) {
+        appointmentMaker.deleteAppointmentById(appointmentId);
+        if (teacherId == null)
+            return "redirect:/teachers/find";
+        return "redirect:/teachers/" + teacherId;
     }
 
     @GetMapping("/teachers/find")
