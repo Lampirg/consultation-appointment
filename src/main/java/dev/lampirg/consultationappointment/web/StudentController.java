@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-@PreAuthorize("hasRole('STUDENT')")
+@RequestMapping("/student")
 public class StudentController {
 
     private TeacherRepository teacherRepository;
@@ -43,7 +43,7 @@ public class StudentController {
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/student/profile")
+    @GetMapping("/profile")
     public String getStudentProfile(@AuthenticationPrincipal Student student, Model model) {
         model.addAttribute("student", student);
         List<Appointment> appointments = new ArrayList<>(student.getAppointment());
@@ -91,7 +91,7 @@ public class StudentController {
         appointmentMaker.deleteAppointmentById(appointmentId);
         if (teacherId == null)
             return "redirect:/student/profile";
-        return "redirect:/teachers/" + teacherId;
+        return "redirect:/student/teachers/" + teacherId;
     }
 
     @GetMapping("/teachers/find")
@@ -114,7 +114,7 @@ public class StudentController {
         } else if (ownersResults.getTotalElements() == 1) {
             // 1 teacher found
             teacher = ownersResults.iterator().next();
-            return "redirect:/teachers/" + teacher.getId();
+            return "redirect:/student/teachers/" + teacher.getId();
         } else {
             // multiple owners found
             return addPaginationModel(page, model, ownersResults);

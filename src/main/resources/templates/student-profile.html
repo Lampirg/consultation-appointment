@@ -17,7 +17,7 @@
         <td th:text="${#temporals.format(appointment.appointmentPeriod.endTime, 'dd.MM.yy hh:mm')}"></td>
         <td th:text="${appointment.teacher.lastName + ' ' + appointment.teacher.firstName + ' ' + appointment.teacher.patronymic}"></td>
         <td>
-            <form th:action="@{/appointments/__${appointment.id}__/delete}" method="post">
+            <form th:action="@{/student/appointments/__${appointment.id}__/delete}" method="post">
                 <button type="submit">Отменить запись на консультацию</button>
             </form>
         </td>

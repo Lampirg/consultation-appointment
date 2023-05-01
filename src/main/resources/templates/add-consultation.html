@@ -12,7 +12,7 @@
         <th>Начало</th>
         <th>Конец</th>
     </tr>
-    <form th:each="datePeriod : ${datePeriods}" th:action="@{/teachers/__${teacher.id}__/add}"
+    <form th:each="datePeriod : ${datePeriods}" th:action="@{/student/teachers/__${teacher.id}__/add}"
           id="datePeriod" name="datePeriod" method="post">
         <tr>
             <td th:text="${#temporals.format(datePeriod.startTime, 'dd.MM.yy')}"></td>
