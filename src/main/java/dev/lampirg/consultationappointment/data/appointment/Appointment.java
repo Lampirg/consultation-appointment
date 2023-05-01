@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 @InTimeBorders
 public class Appointment extends AbstractPersistable<Long> {
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Teacher teacher;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private Student student;
 
     @ManyToOne
