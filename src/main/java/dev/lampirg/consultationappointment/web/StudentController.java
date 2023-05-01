@@ -49,12 +49,12 @@ public class StudentController {
         List<Appointment> appointments = new ArrayList<>(student.getAppointment());
         appointments.sort(Comparator.comparing(Appointment::getStartTime));
         model.addAttribute("appointments", appointments);
-        return "student-profile";
+        return "student/student-profile";
     }
 
     @GetMapping("/teachers/{id}")
     public ModelAndView openTeacherPage(@PathVariable("id") int id, @AuthenticationPrincipal Student student) {
-        ModelAndView modelAndView = new ModelAndView("teacher-details");
+        ModelAndView modelAndView = new ModelAndView("student/teacher-details");
         Teacher teacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
         modelAndView.addObject(teacher);
@@ -67,7 +67,7 @@ public class StudentController {
     @GetMapping("/teachers/{id}/add")
     public ModelAndView openAddConsultationPage(@PathVariable("id") int id,
                                                 @AuthenticationPrincipal Student student) {
-        ModelAndView modelAndView = new ModelAndView("add-consultation");
+        ModelAndView modelAndView = new ModelAndView("student/add-consultation");
         Teacher teacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
         Set<DatePeriod> datePeriods = teacher.getDatePeriods().stream()
@@ -83,7 +83,7 @@ public class StudentController {
                                   Teacher teacher, @AuthenticationPrincipal Student student) {
         DatePeriod datePeriod = teacherRepository.findDatePeriodById(datePeriodId).orElseThrow();
         appointmentMaker.makeAppointment(teacher, student, datePeriod);
-        return "redirect:/teachers/" + id;
+        return "redirect:/student/teachers/" + id;
     }
 
     @PostMapping({"/teachers/{teacherId}/delete/{appointmentId}", "/appointments/{appointmentId}/delete"})
@@ -96,7 +96,7 @@ public class StudentController {
 
     @GetMapping("/teachers/find")
     public String findTeacher() {
-        return "find-teacher";
+        return "student/find-teacher";
     }
 
     @GetMapping("/teachers")
@@ -110,7 +110,7 @@ public class StudentController {
         if (ownersResults.isEmpty()) {
             // no owners found
             result.rejectValue("lastName", "notFound", "Преподаватель не найден");
-            return "find-teacher";
+            return "student/find-teacher";
         } else if (ownersResults.getTotalElements() == 1) {
             // 1 teacher found
             teacher = ownersResults.iterator().next();
@@ -134,6 +134,6 @@ public class StudentController {
         model.addAttribute("totalPages", paginated.getTotalPages());
         model.addAttribute("totalItems", paginated.getTotalElements());
         model.addAttribute("teachers", teachers);
-        return "teachers-list";
+        return "student/teachers-list";
     }
 }
