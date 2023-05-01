@@ -16,9 +16,7 @@ public class LoginController {
 
     @GetMapping("/student/login")
     public String studentLogin(Model model, HttpServletRequest request, @RequestParam(defaultValue = "false") boolean hasError) {
-        if (hasError)
-            getErrorMessage(request).ifPresent((message) -> model.addAttribute("error", message));
-        model.addAttribute("login", "/student/login");
+        formModel(hasError, request, model, "/student/login");
         return "login";
     }
 
@@ -29,9 +27,21 @@ public class LoginController {
     }
 
     @GetMapping("/teacher/login")
-    public String teacherLogin(Model model) {
-        model.addAttribute("login", "/teacher/login");
+    public String teacherLogin(Model model, HttpServletRequest request, @RequestParam(defaultValue = "false") boolean hasError) {
+        formModel(hasError, request, model, "/teacher/login");
         return "login";
+    }
+
+    @GetMapping("/teacher/logout")
+    public String teacherLogout(Model model, HttpServletRequest request, @RequestParam(defaultValue = "false") boolean hasError) {
+        formModel(hasError, request, model, "/teacher/logout");
+        return "login";
+    }
+
+    private void formModel(boolean hasError, HttpServletRequest request, Model model, String attributeValue) {
+        if (hasError)
+            getErrorMessage(request).ifPresent((message) -> model.addAttribute("error", message));
+        model.addAttribute("login", attributeValue);
     }
 
     private Optional<String> getErrorMessage(HttpServletRequest request) {
