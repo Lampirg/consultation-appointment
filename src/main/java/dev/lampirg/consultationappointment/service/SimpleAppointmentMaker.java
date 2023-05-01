@@ -40,8 +40,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
                 datePeriod.getUnoccupiedTime().minus(INTERVAL)
         );
         appointment = appointmentRepository.save(appointment);
-        student.getAppointment().add(appointment);
-        studentRepository.save(student);
+        studentRepository.findById(appointment.getStudent().getId()).get().getAppointment().add(appointment);
     }
 
     @Override
