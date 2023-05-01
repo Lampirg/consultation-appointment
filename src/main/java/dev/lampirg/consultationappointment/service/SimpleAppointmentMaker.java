@@ -20,9 +20,11 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
     public final static Duration INTERVAL = Duration.ofMinutes(15);
 
     private AppointmentRepository appointmentRepository;
+    private StudentRepository studentRepository;
 
-    public SimpleAppointmentMaker(AppointmentRepository appointmentRepository) {
+    public SimpleAppointmentMaker(AppointmentRepository appointmentRepository, StudentRepository studentRepository) {
         this.appointmentRepository = appointmentRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -37,7 +39,9 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
         datePeriod.setUnoccupiedTime(
                 datePeriod.getUnoccupiedTime().minus(INTERVAL)
         );
-        appointmentRepository.saveAndFlush(appointment);
+        appointment = appointmentRepository.save(appointment);
+        student.getAppointment().add(appointment);
+        studentRepository.save(student);
     }
 
     @Override
@@ -48,6 +52,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
         );
         appointmentRepository.save(appointment);
         appointmentRepository.delete(appointment);
+        studentRepository.findById(appointment.getStudent().getId()).get().getAppointment().remove(appointment);
     }
 
     @Override
