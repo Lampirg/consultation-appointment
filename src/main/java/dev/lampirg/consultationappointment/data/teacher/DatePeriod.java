@@ -1,7 +1,10 @@
 package dev.lampirg.consultationappointment.data.teacher;
 
+import dev.lampirg.consultationappointment.data.appointment.Appointment;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -9,7 +12,9 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,6 +31,9 @@ public class DatePeriod extends AbstractPersistable<Long> {
 
     @NotNull
     private Duration unoccupiedTime;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "appointmentPeriod")
+    private Set<Appointment> appointments = new HashSet<>();
 
     public DatePeriod(LocalDateTime startTime, LocalDateTime endTime) {
         this.startTime = startTime;

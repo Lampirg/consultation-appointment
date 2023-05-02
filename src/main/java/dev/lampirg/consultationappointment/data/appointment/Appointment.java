@@ -19,13 +19,15 @@ import java.time.LocalDateTime;
 public class Appointment extends AbstractPersistable<Long> {
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @Cascade(org.hibernate.annotations.CascadeType.REPLICATE)
+    @JoinColumn(name = "student_id")
     private Student student;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "appointmentPeriod_id")
     private DatePeriod appointmentPeriod;
 
     private LocalDateTime startTime;

@@ -24,7 +24,7 @@ public class Teacher extends Person {
         super(firstName, lastName, patronymic, email, password);
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<DatePeriod> datePeriods = new HashSet<>();
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER)
