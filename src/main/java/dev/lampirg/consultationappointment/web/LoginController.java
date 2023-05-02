@@ -34,8 +34,8 @@ public class LoginController {
 
     @GetMapping("/teacher/logout")
     public String teacherLogout(Model model, HttpServletRequest request, @RequestParam(defaultValue = "false") boolean hasError) {
-        formModel(hasError, request, model, "/teacher/logout");
-        return "login";
+        model.addAttribute("logout", "/teacher/logout");
+        return "logout";
     }
 
     private void formModel(boolean hasError, HttpServletRequest request, Model model, String attributeValue) {
