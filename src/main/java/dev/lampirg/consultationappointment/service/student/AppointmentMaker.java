@@ -1,4 +1,4 @@
-package dev.lampirg.consultationappointment.service;
+package dev.lampirg.consultationappointment.service.student;
 
 import dev.lampirg.consultationappointment.data.student.Student;
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
