@@ -76,4 +76,10 @@ public class IntegrationTest {
         assertThrows(TransactionSystemException.class, () -> appointmentRepository.save(appointment));
     }
 
+    @Test
+    public void testUpdateDatePeriod() {
+        Appointment appointment = appointmentRepository.findAll().get(0);
+        assertEquals(1, appointmentRepository.findAll().get(0).getAppointmentPeriod().getAppointments().size());
+    }
+
 }
