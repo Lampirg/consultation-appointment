@@ -59,7 +59,9 @@ public class StudentController {
         modelAndView.addObject(teacher);
         Set<Appointment> appointments = new HashSet<>(student.getAppointment());
         appointments.retainAll(teacher.getAppointment());
-        modelAndView.addObject("appointments", appointments);
+        List<Appointment> appointmentList = new ArrayList<>(appointments);
+        appointmentList.sort(Comparator.comparing(Appointment::getStartTime));
+        modelAndView.addObject("appointments", appointmentList);
         return modelAndView;
     }
 
@@ -69,9 +71,10 @@ public class StudentController {
         ModelAndView modelAndView = new ModelAndView("student/add-consultation");
         Teacher teacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
-        Set<DatePeriod> datePeriods = teacher.getDatePeriods().stream()
+        List<DatePeriod> datePeriods = teacher.getDatePeriods().stream()
                 .filter(datePeriod -> appointmentMaker.isAvailable(teacher, student, datePeriod))
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparing(DatePeriod::getStartTime))
+                .collect(Collectors.toList());
         modelAndView.addObject("datePeriods", datePeriods);
         modelAndView.addObject(teacher);
         return modelAndView;
