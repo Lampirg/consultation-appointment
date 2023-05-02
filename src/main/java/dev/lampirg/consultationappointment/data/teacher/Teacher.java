@@ -29,7 +29,7 @@ public class Teacher extends Person {
         super(firstName, lastName, patronymic, email, password);
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<DatePeriod> datePeriods = new HashSet<>();
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER)

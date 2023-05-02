@@ -34,7 +34,7 @@ public class DatePeriod extends AbstractPersistable<Long> {
     @NotNull
     private Duration unoccupiedTime;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "appointmentPeriod")
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "appointmentPeriod")
     private Set<Appointment> appointments = new HashSet<>();
 
     public DatePeriod(LocalDateTime startTime, LocalDateTime endTime) {

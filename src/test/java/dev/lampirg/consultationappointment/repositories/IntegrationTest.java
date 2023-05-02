@@ -82,4 +82,12 @@ public class IntegrationTest {
         assertEquals(1, appointmentRepository.findAll().get(0).getAppointmentPeriod().getAppointments().size());
     }
 
+    @Test
+    public void testDeleteDatePeriod() {
+        Teacher teacher = teacherRepository.findAll().get(0);
+        teacher.getDatePeriods().remove(teacher.getDatePeriods().stream().toList().get(0));
+        teacherRepository.save(teacher);
+        assertTrue(appointmentRepository.findAll().isEmpty());
+    }
+
 }
