@@ -2,7 +2,6 @@ package dev.lampirg.consultationappointment.web;
 
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,5 +24,6 @@ public class TeacherController {
         model.addAttribute("consultations", datePeriods);
         return "teacher/teacher-profile";
     }
+
 
 }

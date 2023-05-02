@@ -2,7 +2,6 @@ package dev.lampirg.consultationappointment.security;
 
 import dev.lampirg.consultationappointment.data.model.Person;
 import dev.lampirg.consultationappointment.data.model.PersonRepository;
-import dev.lampirg.consultationappointment.data.student.StudentRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -2,12 +2,10 @@ package dev.lampirg.consultationappointment.repositories;
 
 import dev.lampirg.consultationappointment.data.student.Student;
 import dev.lampirg.consultationappointment.data.student.StudentRepository;
-import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.transaction.TransactionSystemException;
 
 import static org.junit.jupiter.api.Assertions.*;

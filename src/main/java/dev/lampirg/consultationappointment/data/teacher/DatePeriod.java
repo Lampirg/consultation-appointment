@@ -1,12 +1,14 @@
 package dev.lampirg.consultationappointment.data.teacher;
 
 import dev.lampirg.consultationappointment.data.appointment.Appointment;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 

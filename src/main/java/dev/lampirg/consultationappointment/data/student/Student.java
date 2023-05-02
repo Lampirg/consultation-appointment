@@ -2,14 +2,19 @@ package dev.lampirg.consultationappointment.data.student;
 
 import dev.lampirg.consultationappointment.data.appointment.Appointment;
 import dev.lampirg.consultationappointment.data.model.Person;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.HashSet;

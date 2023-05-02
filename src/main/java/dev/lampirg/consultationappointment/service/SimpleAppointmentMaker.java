@@ -6,11 +6,7 @@ import dev.lampirg.consultationappointment.data.student.Student;
 import dev.lampirg.consultationappointment.data.student.StudentRepository;
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 

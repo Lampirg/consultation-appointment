@@ -2,7 +2,6 @@ package dev.lampirg.consultationappointment.data.admin;
 
 import dev.lampirg.consultationappointment.data.model.Person;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
