@@ -1,3 +1,7 @@
 spring:
+  config:
+    import: email.yml
+
   profiles:
     active:
+      - email
