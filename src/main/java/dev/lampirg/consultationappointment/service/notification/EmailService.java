@@ -1,21 +1,7 @@
 package dev.lampirg.consultationappointment.service.notification;
 
-import org.springframework.context.annotation.Profile;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Service;
+import org.springframework.mail.MailMessage;
 
-@Service
-@Profile("email")
-public class EmailService {
-
-    private MailSender mailSender;
-
-    public EmailService(MailSender mailSender) {
-        this.mailSender = mailSender;
-    }
-
-    public void sendEmail(SimpleMailMessage message) {
-        mailSender.send(message);
-    }
+public interface EmailService<T extends MailMessage> {
+    void sendEmail(T message);
 }
