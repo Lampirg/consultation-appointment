@@ -14,7 +14,7 @@ public class EmailService {
     public EmailService(MailSender mailSender) {
         this.mailSender = mailSender;
     }
-    // TODO: this method
+
     public void sendEmail(SimpleMailMessage message) {
         mailSender.send(message);
     }
