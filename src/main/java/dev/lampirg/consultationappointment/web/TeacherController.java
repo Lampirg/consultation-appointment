@@ -62,6 +62,8 @@ public class TeacherController {
         return "redirect:/teacher/profile";
     }
 
+    // TODO: methods for creating, displaying and deleting consultation patterns ("/pattern/add" and "/pattern")
+
     @Data
     public static class ConsultationInfo {
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
