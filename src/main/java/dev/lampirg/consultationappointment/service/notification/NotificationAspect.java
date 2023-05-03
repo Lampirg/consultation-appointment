@@ -32,9 +32,13 @@ public class NotificationAspect {
         message.setTo(teacher.getEmail());
         String text = """
                 Здравствуйте, %s %s %s.
-                На вашу консультацию записался студент.
+                На вашу консультацию, которая состоится %td.%tm с %tR до %tR записался студент.
                 """;
-        message.setText(String.format("Здравствуйте, %s %s %s."));
+        message.setText(String.format(text,
+                teacher.getLastName(), teacher.getFirstName(), teacher.getPatronymic(),
+                datePeriod.getStartTime().toLocalDate(), datePeriod.getStartTime().toLocalDate(),
+                datePeriod.getStartTime().toLocalTime(), datePeriod.getEndTime().toLocalTime()
+        ));
         emailService.sendEmail(message);
     }
 
