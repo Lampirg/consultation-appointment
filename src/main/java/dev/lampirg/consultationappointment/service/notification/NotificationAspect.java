@@ -6,14 +6,16 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 @Profile("email")
+@Async
 public class NotificationAspect {
 
-    private EmailService emailService;
+    private EmailService<SimpleMailMessage> emailService;
 
     public NotificationAspect(EmailService emailService) {
         this.emailService = emailService;
