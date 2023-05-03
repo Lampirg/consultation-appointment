@@ -54,6 +54,7 @@ public class TeacherController {
     @PostMapping("/consultation/add")
     public String createConsultation(ConsultationInfo consultation, @AuthenticationPrincipal Teacher teacher) {
         DatePeriod datePeriod = new DatePeriod(
+                consultation.classroom,
                 LocalDateTime.of(consultation.date, consultation.startTime),
                 LocalDateTime.of(consultation.date, consultation.endTime)
         );
@@ -65,6 +66,8 @@ public class TeacherController {
     public static class ConsultationInfo {
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         private LocalDate date;
+
+        private String classroom;
         @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
         private LocalTime startTime;
         @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)

@@ -4,7 +4,9 @@ import dev.lampirg.consultationappointment.data.appointment.Appointment;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +27,10 @@ import java.util.Set;
 @NoArgsConstructor
 public class DatePeriod extends AbstractPersistable<Long> {
 
+    @NotEmpty
+    @Pattern(regexp = "\\d{1,2}-\\d{3}")
+    private String classroom;
+
     @NotNull
     private LocalDateTime startTime;
 
@@ -37,7 +43,8 @@ public class DatePeriod extends AbstractPersistable<Long> {
     @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "appointmentPeriod")
     private Set<Appointment> appointments = new HashSet<>();
 
-    public DatePeriod(LocalDateTime startTime, LocalDateTime endTime) {
+    public DatePeriod(String classroom, LocalDateTime startTime, LocalDateTime endTime) {
+        this.classroom = classroom;
         this.startTime = startTime;
         this.endTime = endTime;
         unoccupiedTime = Duration.between(startTime, endTime);

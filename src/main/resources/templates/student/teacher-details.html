@@ -24,10 +24,12 @@
 
 <table class="table table-striped">
     <tr>
+        <th>Кабинет</th>
         <th>Начало</th>
         <th>Конец</th>
     </tr>
     <tr th:each="appointment : ${appointments}">
+        <td th:text="${appointment.appointmentPeriod.classroom}"></td>
         <td th:text="${#temporals.format(appointment.appointmentPeriod.startTime, 'dd.MM.yy hh:mm')}"></td>
         <td th:text="${#temporals.format(appointment.appointmentPeriod.endTime, 'dd.MM.yy hh:mm')}"></td>
         <td>

@@ -8,6 +8,7 @@
 <h>Выберите день консультации</h>
 <table class="table table-striped">
     <tr>
+        <th>Кабинет</th>
         <th>Дата</th>
         <th>Начало</th>
         <th>Конец</th>
@@ -15,6 +16,7 @@
     <form th:each="datePeriod : ${datePeriods}" th:action="@{/student/teachers/__${teacher.id}__/add}"
           id="datePeriod" name="datePeriod" method="post">
         <tr>
+            <td th:text="${datePeriod.classroom}"></td>
             <td th:text="${#temporals.format(datePeriod.startTime, 'dd.MM.yy')}"></td>
             <td th:text="${#temporals.format(datePeriod.startTime, 'hh:mm')}"></td>
             <td th:text="${#temporals.format(datePeriod.endTime, 'hh:mm')}"></td>
