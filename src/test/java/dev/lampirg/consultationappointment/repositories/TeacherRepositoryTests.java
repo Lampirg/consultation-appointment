@@ -58,7 +58,7 @@ public class TeacherRepositoryTests {
         teacher.setLastName("Иванов");
         teacher.setPatronymic("Александрович");
         teacher.setEmail("mahesh@test.com");
-        teacher.getDatePeriods().add(new DatePeriod(
+        teacher.getDatePeriods().add(new DatePeriod("1-101",
                 LocalDateTime.of(2005, 6, 25, 13, 0),
                 LocalDateTime.of(2005, 6, 25, 14, 30)
         ));
