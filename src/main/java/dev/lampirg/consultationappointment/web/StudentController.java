@@ -2,6 +2,7 @@ package dev.lampirg.consultationappointment.web;
 
 import dev.lampirg.consultationappointment.data.appointment.Appointment;
 import dev.lampirg.consultationappointment.data.student.Student;
+import dev.lampirg.consultationappointment.data.student.StudentRepository;
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import dev.lampirg.consultationappointment.data.teacher.TeacherRepository;
@@ -29,11 +30,12 @@ public class StudentController {
 
     private TeacherRepository teacherRepository;
     private AppointmentMaker appointmentMaker;
+    private StudentRepository studentRepository;
 
-    @Autowired
-    public StudentController(TeacherRepository teacherRepository, SimpleAppointmentMaker appointmentMaker) {
+    public StudentController(TeacherRepository teacherRepository, AppointmentMaker appointmentMaker, StudentRepository studentRepository) {
         this.teacherRepository = teacherRepository;
         this.appointmentMaker = appointmentMaker;
+        this.studentRepository = studentRepository;
     }
 
     @ModelAttribute("teacher")
@@ -44,6 +46,7 @@ public class StudentController {
 
     @GetMapping("/profile")
     public String getStudentProfile(@AuthenticationPrincipal Student student, Model model) {
+        student = studentRepository.findById(student.getId()).orElseThrow();
         model.addAttribute("student", student);
         List<Appointment> appointments = new ArrayList<>(student.getAppointment());
         appointments.sort(Comparator.comparing(Appointment::getStartTime));
@@ -57,7 +60,7 @@ public class StudentController {
         Teacher teacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
         modelAndView.addObject(teacher);
-        Set<Appointment> appointments = new HashSet<>(student.getAppointment());
+        Set<Appointment> appointments = new HashSet<>(studentRepository.findById(student.getId()).orElseThrow().getAppointment());
         appointments.retainAll(teacher.getAppointment());
         List<Appointment> appointmentList = new ArrayList<>(appointments);
         appointmentList.sort(Comparator.comparing(Appointment::getStartTime));
@@ -72,7 +75,7 @@ public class StudentController {
         Teacher teacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
         List<DatePeriod> datePeriods = teacher.getDatePeriods().stream()
-                .filter(datePeriod -> appointmentMaker.isAvailable(teacher, student, datePeriod))
+                .filter(datePeriod -> appointmentMaker.isAvailable(teacher, studentRepository.findById(student.getId()).orElseThrow(), datePeriod))
                 .sorted(Comparator.comparing(DatePeriod::getStartTime))
                 .collect(Collectors.toList());
         modelAndView.addObject("datePeriods", datePeriods);
@@ -84,7 +87,7 @@ public class StudentController {
     public String addConsultation(@PathVariable("id") int id, Long datePeriodId,
                                   Teacher teacher, @AuthenticationPrincipal Student student) {
         DatePeriod datePeriod = teacherRepository.findDatePeriodById(datePeriodId).orElseThrow();
-        appointmentMaker.makeAppointment(teacher, student, datePeriod);
+        appointmentMaker.makeAppointment(teacher, studentRepository.findById(student.getId()).orElseThrow(), datePeriod);
         return "redirect:/student/teachers/" + id;
     }
 

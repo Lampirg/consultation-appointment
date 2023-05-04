@@ -2,6 +2,7 @@ package dev.lampirg.consultationappointment.web;
 
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
+import dev.lampirg.consultationappointment.data.teacher.TeacherRepository;
 import dev.lampirg.consultationappointment.service.teacher.ConsultationMaker;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,13 +26,16 @@ import java.util.List;
 public class TeacherController {
 
     ConsultationMaker consultationMaker;
+    TeacherRepository teacherRepository;
 
-    public TeacherController(ConsultationMaker consultationMaker) {
+    public TeacherController(ConsultationMaker consultationMaker, TeacherRepository teacherRepository) {
         this.consultationMaker = consultationMaker;
+        this.teacherRepository = teacherRepository;
     }
 
     @GetMapping("/profile")
     public String getTeacherProfile(@AuthenticationPrincipal Teacher teacher, Model model) {
+        teacher = teacherRepository.findById(teacher.getId()).orElseThrow();
         model.addAttribute("teacher", teacher);
         List<DatePeriod> datePeriods = new ArrayList<>(teacher.getDatePeriods());
         datePeriods.sort(Comparator.comparing(DatePeriod::getStartTime));
@@ -41,7 +45,7 @@ public class TeacherController {
 
     @PostMapping("/{consultationId}/delete")
     public String deleteConsultation(@PathVariable Long consultationId, @AuthenticationPrincipal Teacher teacher) {
-        consultationMaker.deleteConsultationById(teacher, consultationId);
+        consultationMaker.deleteConsultationById(teacherRepository.findById(teacher.getId()).orElseThrow(), consultationId);
         return "redirect:/teacher/profile";
     }
 
@@ -58,7 +62,7 @@ public class TeacherController {
                 LocalDateTime.of(consultation.date, consultation.startTime),
                 LocalDateTime.of(consultation.date, consultation.endTime)
         );
-        consultationMaker.createConsultation(teacher, datePeriod);
+        consultationMaker.createConsultation(teacherRepository.findById(teacher.getId()).orElseThrow(), datePeriod);
         return "redirect:/teacher/profile";
     }
 
