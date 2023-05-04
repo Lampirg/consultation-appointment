@@ -82,7 +82,7 @@ public class StudentController {
         modelAndView.addObject(teacher);
         return modelAndView;
     }
-    // TODO: Restrict creating appointment if zero appointed students and today is the day of consultation.
+
     @PostMapping("/teachers/{id}/add")
     public String addConsultation(@PathVariable("id") int id, Long datePeriodId,
                                   Teacher teacher, @AuthenticationPrincipal Student student) {

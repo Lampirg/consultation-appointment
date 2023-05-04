@@ -16,7 +16,6 @@ import java.util.Optional;
 @Component
 public class AutoDeleteConsultationAspect {
 
-    private DatePeriod datePeriod;
     private TeacherRepository teacherRepository;
     private ConsultationMaker consultationMaker;
     private TaskScheduler scheduler;

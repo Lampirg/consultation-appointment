@@ -68,7 +68,6 @@ public class TeacherController {
     }
 
     // TODO: methods for creating, displaying and deleting consultation patterns ("/pattern/add" and "/pattern")
-    // TODO: delete consultations which time has passed
 
     @Data
     public static class ConsultationInfo {
