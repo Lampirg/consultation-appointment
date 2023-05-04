@@ -45,7 +45,8 @@ public class TeacherController {
 
     @PostMapping("/{consultationId}/delete")
     public String deleteConsultation(@PathVariable Long consultationId, @AuthenticationPrincipal Teacher teacher) {
-        consultationMaker.deleteConsultationById(teacherRepository.findById(teacher.getId()).orElseThrow(), consultationId);
+        DatePeriod datePeriod = teacherRepository.findDatePeriodById(consultationId).orElseThrow();
+        consultationMaker.deleteConsultation(teacherRepository.findById(teacher.getId()).orElseThrow(), datePeriod);
         return "redirect:/teacher/profile";
     }
 

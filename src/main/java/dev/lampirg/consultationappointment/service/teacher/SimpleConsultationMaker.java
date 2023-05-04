@@ -23,9 +23,9 @@ public class SimpleConsultationMaker implements ConsultationMaker {
     }
     
     @Override
-    public void deleteConsultationById(Teacher teacher, Long datePeriodId) {
-        if (!teacher.getDatePeriods().remove(teacherRepository.findDatePeriodById(datePeriodId).orElseThrow())) {
-            throw new NoSuchElementException("No datePeriod with id = " + datePeriodId + " present in " + teacher + "datePeriods");
+    public void deleteConsultation(Teacher teacher, DatePeriod datePeriod) {
+        if (!teacher.getDatePeriods().remove(datePeriod)) {
+            throw new NoSuchElementException("No datePeriod with id = " + datePeriod + " present in " + teacher + "datePeriods");
         }
         teacherRepository.save(teacher);
     }

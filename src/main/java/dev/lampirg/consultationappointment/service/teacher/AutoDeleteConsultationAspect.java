@@ -38,7 +38,7 @@ public class AutoDeleteConsultationAspect {
                             teacherDatePeriod.getEndTime().isEqual(datePeriod.getEndTime()))
                     .findAny();
             if (freshDatePeriod.isPresent() && freshDatePeriod.get().getEndTime().isEqual(datePeriod.getEndTime()))
-                consultationMaker.deleteConsultationById(teacherRepository.findById(teacher.getId()).orElseThrow(), freshDatePeriod.get().getId());
+                consultationMaker.deleteConsultation(teacherRepository.findById(teacher.getId()).orElseThrow(), freshDatePeriod.get());
         }, instant);
     }
 
