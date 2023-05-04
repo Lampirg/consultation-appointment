@@ -54,7 +54,8 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
     @Override
     public boolean isAvailable(DatePeriod datePeriod) {
         return !datePeriod.getUnoccupiedTime().minus(INTERVAL).isNegative() &&
-                datePeriod.getStartTime().toLocalDate().isAfter(LocalDate.now());
+                (datePeriod.getStartTime().toLocalDate().isAfter(LocalDate.now()) ||
+                        !datePeriod.getAppointments().isEmpty());
     }
 
     @Override
