@@ -9,6 +9,7 @@ import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 
 @Service
 public class SimpleAppointmentMaker implements AppointmentMaker {
@@ -52,7 +53,8 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
 
     @Override
     public boolean isAvailable(DatePeriod datePeriod) {
-        return !datePeriod.getUnoccupiedTime().minus(INTERVAL).isNegative();
+        return !datePeriod.getUnoccupiedTime().minus(INTERVAL).isNegative() &&
+                datePeriod.getStartTime().toLocalDate().isAfter(LocalDate.now());
     }
 
     @Override
