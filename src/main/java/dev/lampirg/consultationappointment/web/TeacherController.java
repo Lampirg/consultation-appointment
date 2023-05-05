@@ -4,7 +4,9 @@ import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import dev.lampirg.consultationappointment.data.teacher.TeacherRepository;
 import dev.lampirg.consultationappointment.service.teacher.ConsultationMaker;
+import dev.lampirg.consultationappointment.service.teacher.ConsultationScheduler;
 import dev.lampirg.consultationappointment.web.fetch.ConsultationInfo;
+import dev.lampirg.consultationappointment.web.fetch.ConsultationPattern;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,12 +24,14 @@ import java.util.List;
 @RequestMapping("/teacher")
 public class TeacherController {
 
-    ConsultationMaker consultationMaker;
-    TeacherRepository teacherRepository;
+    private ConsultationMaker consultationMaker;
+    private TeacherRepository teacherRepository;
+    private ConsultationScheduler consultationScheduler;
 
-    public TeacherController(ConsultationMaker consultationMaker, TeacherRepository teacherRepository) {
+    public TeacherController(ConsultationMaker consultationMaker, TeacherRepository teacherRepository, ConsultationScheduler consultationScheduler) {
         this.consultationMaker = consultationMaker;
         this.teacherRepository = teacherRepository;
+        this.consultationScheduler = consultationScheduler;
     }
 
     @GetMapping("/profile")
@@ -65,6 +69,17 @@ public class TeacherController {
     }
 
     // TODO: methods for creating, displaying and deleting consultation patterns ("/pattern/add" and "/pattern")
+    @GetMapping("/pattern/add")
+    public String openPatternCreationPage(Model model) {
+        model.addAttribute("pattern", new ConsultationPattern());
+        return "teacher/create-pattern";
+    }
+
+    @PostMapping("/pattern/add")
+    public String addPattern(ConsultationPattern pattern, @AuthenticationPrincipal Teacher teacher) {
+        pattern.setTeacher(teacherRepository.findById(teacher.getId()).orElseThrow());
+        consultationScheduler.addPattern(pattern);
+        return "redirect:/teacher/profile";
     }
 
 }
