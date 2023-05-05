@@ -2,14 +2,14 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Создание плановой консультации</title>
+    <title>Создание расписания плановой консультации</title>
 </head>
 <body>
 <form th:action="@{/teacher/pattern/add}" th:object="${pattern}" method="post">
-  <label for="from">Начиная с:</label>
+  <label for="from">На неделю вперёд начиная с:</label>
   <input type="date" id="from" th:field="*{consultationInfo.date}" />
 
-  <label for="until">Начиная с:</label>
+  <label for="until">До:</label>
   <input type="date" id="until" th:field="*{until}" />
 
   <label for="classroom">Кабинет:</label>

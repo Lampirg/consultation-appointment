@@ -15,16 +15,4 @@ public class ConsultationPattern {
     private ConsultationInfo consultationInfo;
     private Teacher teacher;
 
-    public AppointmentPattern toAppointmentPattern() {
-        AppointmentPattern pattern = new AppointmentPattern();
-        pattern.setTeacher(teacher);
-        pattern.setFrom(consultationInfo.getDate());
-        pattern.setUntil(until);
-        pattern.setDayOfWeek(consultationInfo.getDate().getDayOfWeek());
-        pattern.setClassroom(consultationInfo.getClassroom());
-        pattern.setStartTime(consultationInfo.getStartTime());
-        pattern.setEndTime(consultationInfo.getEndTime());
-        return pattern;
-    }
-
 }

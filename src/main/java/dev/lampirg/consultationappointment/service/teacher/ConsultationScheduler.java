@@ -5,11 +5,11 @@ import dev.lampirg.consultationappointment.web.fetch.ConsultationPattern;
 import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.*;
 
-@Component
-@Scope(value = "request")
+@Service
 public class ConsultationScheduler {
 
     ConsultationMaker consultationMaker;
