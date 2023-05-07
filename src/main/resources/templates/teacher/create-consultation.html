@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание консультации</title>
+</head>
+<body>
+<form th:action="@{/teacher/consultation/add}" th:object="${consultation}" method="post">
+    <label for="date">Дата консультации:</label>
+    <input type="date" id="date" th:field="*{date}" />
+
+    <label for="classroom">Кабинет:</label>
+    <input type="text" id="classroom" th:field="*{classroom}" />
+
+    <label for="startTime">Время начала консультации:</label>
+    <input type="time" id="startTime" th:field="*{startTime}" />
+
+    <label for="endTime">Время конца консультации:</label>
+    <input type="time" id="endTime" th:field="*{endTime}" />
+
+    <button type="submit">Создать консультацию</button>
+</form>
+</body>
+</html>

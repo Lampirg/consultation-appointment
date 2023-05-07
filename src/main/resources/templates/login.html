@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Авторизация</title>
+</head>
+
+<body>
+<h1>Авторизация</h1>
+
+<div class="alert" th:if="${error}" th:text="${error}"></div>
+
+<!-- tag::thAction[] -->
+<form method="POST" th:action="@{${login}}" id="loginForm">
+    <!-- end::thAction[] -->
+    <label for="email">Электронная почта: </label>
+    <input type="text" name="email" id="email" required autofocus/><br/>
+
+    <label for="password">Пароль: </label>
+    <input type="password" name="password" id="password" required/><br/>
+
+    <input type="submit" value="Login"/>
+</form>
+</body>
+</html>

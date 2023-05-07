@@ -1,6 +1,6 @@
 package dev.lampirg.consultationappointment.data.student;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import dev.lampirg.consultationappointment.data.model.PersonRepository;
 
-public interface StudentRepository extends JpaRepository<Student, Integer> {
+public interface StudentRepository extends PersonRepository<Student> {
 }

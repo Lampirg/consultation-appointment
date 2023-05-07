@@ -10,10 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.TransactionSystemException;
-
-import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,8 +37,8 @@ public class IntegrationTest {
         Appointment appointment = new Appointment();
         appointment.setTeacher(teacher);
         appointment.setStudent(student);
-        appointment.setAppointmentPeriod(teacher.getDatePeriod().stream().toList().get(0));
-        appointment.setStartTime(teacher.getDatePeriod().stream().toList().get(0).getStartTime());
+        appointment.setAppointmentPeriod(teacher.getDatePeriods().stream().toList().get(0));
+        appointment.setStartTime(teacher.getDatePeriods().stream().toList().get(0).getStartTime().plusMinutes(15));
         appointment = appointmentRepository.save(appointment);
     }
 
@@ -56,22 +53,40 @@ public class IntegrationTest {
 
     @Test
     public void testDelete() {
-        assertThrows(DataIntegrityViolationException.class, () -> teacherRepository.delete(teacherRepository.findAll().get(0)));
+        assertDoesNotThrow(() -> teacherRepository.delete(teacherRepository.findAll().get(0)));
         assertDoesNotThrow(() -> studentRepository.delete(studentRepository.findAll().get(0)));
     }
 
     @Test
     public void testIncorrectAppointmentBeforeConsultation() {
         Appointment appointment = appointmentRepository.findAll().get(0);
-        appointment.setStartTime(LocalDateTime.of(2005, 6, 25, 10, 50));
+        appointment.setStartTime(appointment.getAppointmentPeriod().getStartTime().minusMinutes(25));
         assertThrows(TransactionSystemException.class, () -> appointmentRepository.save(appointment));
+        appointment.setStartTime(appointment.getAppointmentPeriod().getStartTime());
+        assertDoesNotThrow(() -> appointmentRepository.save(appointment));
     }
 
     @Test
     public void testIncorrectAppointmentAfterConsultation() {
         Appointment appointment = appointmentRepository.findAll().get(0);
-        appointment.setStartTime(LocalDateTime.of(2005, 6, 25, 15, 20));
+        appointment.setStartTime(appointment.getAppointmentPeriod().getEndTime().plusMinutes(25));
         assertThrows(TransactionSystemException.class, () -> appointmentRepository.save(appointment));
+        appointment.setStartTime(appointment.getAppointmentPeriod().getEndTime());
+        assertThrows(TransactionSystemException.class, () -> appointmentRepository.save(appointment));
+    }
+
+    @Test
+    public void testUpdateDatePeriod() {
+        Appointment appointment = appointmentRepository.findAll().get(0);
+        assertEquals(1, appointmentRepository.findAll().get(0).getAppointmentPeriod().getAppointments().size());
+    }
+
+    @Test
+    public void testDeleteDatePeriod() {
+        Teacher teacher = teacherRepository.findAll().get(0);
+        teacher.getDatePeriods().remove(teacher.getDatePeriods().stream().toList().get(0));
+        teacherRepository.save(teacher);
+        assertTrue(appointmentRepository.findAll().isEmpty());
     }
 
 }

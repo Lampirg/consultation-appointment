@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание расписания плановой консультации</title>
+</head>
+<body>
+<form th:action="@{/teacher/pattern/add}" th:object="${pattern}" method="post">
+  <label for="from">На неделю вперёд начиная с:</label>
+  <input type="date" id="from" th:field="*{consultationInfo.date}" />
+
+  <label for="until">До:</label>
+  <input type="date" id="until" th:field="*{until}" />
+
+  <label for="classroom">Кабинет:</label>
+  <input type="text" id="classroom" th:field="*{consultationInfo.classroom}" />
+
+  <label for="startTime">Время начала консультации:</label>
+  <input type="time" id="startTime" th:field="*{consultationInfo.startTime}" />
+
+  <label for="endTime">Время конца консультации:</label>
+  <input type="time" id="endTime" th:field="*{consultationInfo.endTime}" />
+
+  <button type="submit">Создать консультацию</button>
+</form>
+</body>
+</html>

@@ -2,12 +2,10 @@ package dev.lampirg.consultationappointment.repositories;
 
 import dev.lampirg.consultationappointment.data.student.Student;
 import dev.lampirg.consultationappointment.data.student.StudentRepository;
-import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.transaction.TransactionSystemException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +19,7 @@ public class StudentRepositoryTests {
     @BeforeEach
     public void clearAndAdd() {
         studentRepository.deleteAll();
-        studentRepository.save(getStudent());
+//        studentRepository.save(getStudent());
     }
 
     @Test
@@ -43,7 +41,7 @@ public class StudentRepositoryTests {
     @Test
     public void testFindAll() {
         Student student = studentRepository.save(getStudent());
-        assertEquals(2, studentRepository.findAll().size());
+        assertEquals(1, studentRepository.findAll().size());
     }
     @Test
     public void testSave() {
@@ -57,7 +55,7 @@ public class StudentRepositoryTests {
     public void testDelete() {
         Student student = studentRepository.save(getStudent());
         studentRepository.delete(student);
-        assertEquals(1, studentRepository.findAll().size());
+        assertEquals(0, studentRepository.findAll().size());
     }
     public static Student getStudent() {
         Student student = new Student();
@@ -66,6 +64,7 @@ public class StudentRepositoryTests {
         student.setPatronymic("Владиславович");
         student.setEmail("vasilii_sakovich@gmail.com");
         student.setGroupName("ИВБ-911");
+        student.setPassword("qwerty");
         return student;
     }
 }

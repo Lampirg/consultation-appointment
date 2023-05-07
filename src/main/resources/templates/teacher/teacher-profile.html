@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+</head>
+<body>
+<a th:href="@{pattern}" class="btn btn-primary">Расписание плановых консультаций</a>
+<a th:href="@{pattern/add}" class="btn btn-primary">Создать регулярную консультацию</a>
+<a th:href="@{consultation/add}" class="btn btn-primary">Создать внеплановую консультацию</a>
+<h2>Консультации</h2>
+<table class="table table-striped">
+    <tr>
+        <th>Кабинет</th>
+        <th>Начало</th>
+        <th>Конец</th>
+        <th>Количество записавшихся студентов</th>
+    </tr>
+    <tr th:each="consultation : ${consultations}">
+        <td th:text="${consultation.classroom}"></td>
+        <td th:text="${#temporals.format(consultation.startTime, 'dd.MM.yy hh:mm')}"></td>
+        <td th:text="${#temporals.format(consultation.endTime, 'dd.MM.yy hh:mm')}"></td>
+        <td th:text="${#lists.size(consultation.appointments)}"></td>
+        <td>
+            <form th:action="@{/teacher/__${consultation.id}__/delete}" method="post">
+                <button type="submit" th:if="${#lists.isEmpty(consultation.appointments)}"
+                        th:onclick="return confirm('Вы уверены?')">Отменить консультацию
+                </button>
+                <button type="submit" th:unless="${#lists.isEmpty(consultation.appointments)}"
+                        th:onclick="return confirm('Вы уверены? На эту консультацию уже записаны студенты (количество: [[${#lists.size(consultation.appointments)}]]).')">
+                    Отменить консультацию
+                </button>
+            </form>
+        </td>
+    </tr>
+
+</table>
+</body>
+</html>

@@ -1,15 +1,24 @@
 package dev.lampirg.consultationappointment.data.teacher;
 
+import dev.lampirg.consultationappointment.data.appointment.Appointment;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import jakarta.validation.constraints.Pattern;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -17,6 +26,10 @@ import java.util.Objects;
 @ToString
 @NoArgsConstructor
 public class DatePeriod extends AbstractPersistable<Long> {
+
+    @NotEmpty
+    @Pattern(regexp = "\\d{1,2}-\\d{3}")
+    private String classroom;
 
     @NotNull
     private LocalDateTime startTime;
@@ -27,7 +40,11 @@ public class DatePeriod extends AbstractPersistable<Long> {
     @NotNull
     private Duration unoccupiedTime;
 
-    public DatePeriod(LocalDateTime startTime, LocalDateTime endTime) {
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "appointmentPeriod")
+    private Set<Appointment> appointments = new HashSet<>();
+
+    public DatePeriod(String classroom, LocalDateTime startTime, LocalDateTime endTime) {
+        this.classroom = classroom;
         this.startTime = startTime;
         this.endTime = endTime;
         unoccupiedTime = Duration.between(startTime, endTime);

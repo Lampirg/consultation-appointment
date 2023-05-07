@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org">
+
+<body>
+
+<h2>Преподаватель</h2>
+
+<table class="table table-striped" th:object="${teacher}">
+    <tr>
+        <th>ФИО</th>
+        <td><b th:text="*{lastName + ' ' + firstName + ' ' + patronymic}"></b></td>
+    </tr>
+    <tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+
+<a th:href="@{__${teacher.id}__/add}" class="btn btn-primary">Записаться на консультацию</a>
+
+<h2>Ваши записи на консультацию</h2>
+
+<table class="table table-striped">
+    <tr>
+        <th>Кабинет</th>
+        <th>Начало</th>
+        <th>Конец</th>
+    </tr>
+    <tr th:each="appointment : ${appointments}">
+        <td th:text="${appointment.appointmentPeriod.classroom}"></td>
+        <td th:text="${#temporals.format(appointment.appointmentPeriod.startTime, 'dd.MM.yy hh:mm')}"></td>
+        <td th:text="${#temporals.format(appointment.appointmentPeriod.endTime, 'dd.MM.yy hh:mm')}"></td>
+        <td>
+            <form th:action="@{__${teacher.id}__/delete/__${appointment.id}__}" method="post">
+                <button type="submit">Отменить запись на консультацию</button>
+            </form>
+        </td>
+    </tr>
+
+</table>
+
+</body>
+
+</html>

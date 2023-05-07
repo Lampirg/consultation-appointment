@@ -10,10 +10,8 @@ public class InTimeBordersValidator implements ConstraintValidator<InTimeBorders
         boolean isAfterStart =
                 appointment.getStartTime().isAfter(appointment.getAppointmentPeriod().getStartTime()) ||
                 appointment.getStartTime().isEqual(appointment.getAppointmentPeriod().getStartTime());
-
-        boolean isBeforeEnd = appointment.getStartTime().isBefore(
-                appointment.getAppointmentPeriod().getEndTime()
-        );
+        boolean isBeforeEnd =
+                appointment.getStartTime().isBefore(appointment.getAppointmentPeriod().getEndTime());
         return isAfterStart && isBeforeEnd;
     }
 }

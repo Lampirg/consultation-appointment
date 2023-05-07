@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,12 +20,11 @@ public class TeacherRepositoryTests {
     @BeforeEach
     public void clearAndAdd() {
         teacherRepository.deleteAll();
-        teacherRepository.save(getTeacher());
     }
 
     @Test
     public void testDatePeriod() {
-        assertEquals(90, getTeacher().getDatePeriod().stream().toList().get(0).getUnoccupiedTime().toMinutes());
+        assertEquals(90, getTeacher().getDatePeriods().stream().toList().get(0).getUnoccupiedTime().toMinutes());
     }
 
     @Test
@@ -38,7 +36,7 @@ public class TeacherRepositoryTests {
     @Test
     public void testFindAll() {
         Teacher teacher = teacherRepository.save(getTeacher());
-        assertEquals(2, teacherRepository.findAll().size());
+        assertEquals(1, teacherRepository.findAll().size());
     }
     @Test
     public void testSave() {
@@ -52,7 +50,7 @@ public class TeacherRepositoryTests {
     public void testDelete() {
         Teacher teacher = teacherRepository.save(getTeacher());
         teacherRepository.delete(teacher);
-        assertEquals(1, teacherRepository.findAll().size());
+        assertEquals(0, teacherRepository.findAll().size());
     }
     public static Teacher getTeacher() {
         Teacher teacher = new Teacher();
@@ -60,7 +58,7 @@ public class TeacherRepositoryTests {
         teacher.setLastName("Иванов");
         teacher.setPatronymic("Александрович");
         teacher.setEmail("mahesh@test.com");
-        teacher.getDatePeriod().add(new DatePeriod(
+        teacher.getDatePeriods().add(new DatePeriod("1-101",
                 LocalDateTime.of(2005, 6, 25, 13, 0),
                 LocalDateTime.of(2005, 6, 25, 14, 30)
         ));

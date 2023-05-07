@@ -1,6 +1,17 @@
 package dev.lampirg.consultationappointment.data.teacher;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import dev.lampirg.consultationappointment.data.model.PersonRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 
-public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
+import java.util.Optional;
+
+public interface TeacherRepository extends PersonRepository<Teacher> {
+
+    Page<Teacher> findByLastNameStartingWith(String lastName, Pageable pageable);
+
+    @Query("select t from DatePeriod t where t.id = ?1")
+    Optional<DatePeriod> findDatePeriodById(Long datePeriodId);
+
 }
