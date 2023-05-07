@@ -1,6 +1,5 @@
 package dev.lampirg.consultationappointment.web.fetch;
 
-import dev.lampirg.consultationappointment.data.appointment.pattern.AppointmentPattern;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
