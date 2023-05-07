@@ -7,6 +7,9 @@ import dev.lampirg.consultationappointment.service.teacher.ConsultationMaker;
 import dev.lampirg.consultationappointment.service.teacher.ConsultationScheduler;
 import dev.lampirg.consultationappointment.web.fetch.ConsultationInfo;
 import dev.lampirg.consultationappointment.web.fetch.ConsultationPattern;
+import dev.lampirg.consultationappointment.web.fetch.ConsultationPatternListWrapper;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,11 +30,17 @@ public class TeacherController {
     private ConsultationMaker consultationMaker;
     private TeacherRepository teacherRepository;
     private ConsultationScheduler consultationScheduler;
+    private ConsultationPatternListWrapper wrapper;
 
     public TeacherController(ConsultationMaker consultationMaker, TeacherRepository teacherRepository, ConsultationScheduler consultationScheduler) {
         this.consultationMaker = consultationMaker;
         this.teacherRepository = teacherRepository;
         this.consultationScheduler = consultationScheduler;
+    }
+
+    @Autowired
+    public void setWrapper(ConsultationPatternListWrapper wrapper) {
+        this.wrapper = wrapper;
     }
 
     @GetMapping("/profile")
@@ -69,6 +78,20 @@ public class TeacherController {
     }
 
     // TODO: methods for creating, displaying and deleting consultation patterns ("/pattern/add" and "/pattern")
+
+    @GetMapping("/pattern")
+    public String openPatternPage(Model model, @AuthenticationPrincipal Teacher teacher) {
+        wrapper.setPatterns(consultationScheduler.getTeacherPatterns(teacher).orElse(List.of()));
+        model.addAttribute("form", wrapper);
+        return "teacher/patterns";
+    }
+
+    @PostMapping("/pattern/delete")
+    public String deletePattern(Integer index) {
+        consultationScheduler.removePattern(wrapper.getPatterns().get(index));
+        return "redirect:/teacher/pattern";
+    }
+
     @GetMapping("/pattern/add")
     public String openPatternCreationPage(Model model) {
         model.addAttribute("pattern", new ConsultationPattern());
