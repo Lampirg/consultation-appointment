@@ -99,47 +99,14 @@ public class StudentController {
         return "redirect:/student/teachers/" + teacherId;
     }
 
-    // TODO: make not search bar but just list
     @GetMapping("/teachers/find")
-    public String findTeacher() {
-        return "student/find-teacher";
+    public String findTeacher(Model model) {
+        model.addAttribute("teachers", teacherRepository.findAll());
+        return "student/teachers-list";
     }
 
     @GetMapping("/teachers")
-    public String processFindForm(@RequestParam(defaultValue = "1") int page, Teacher teacher,
-                                  BindingResult result, Model model) {
-        if (teacher.getLastName() == null) {
-            teacher.setLastName("");
-        }
-        // find owners by last name
-        Page<Teacher> ownersResults = findTeachersByLastName(teacher.getLastName(), page);
-        if (ownersResults.isEmpty()) {
-            // no owners found
-            result.rejectValue("lastName", "notFound", "Преподаватель не найден");
-            return "student/find-teacher";
-        } else if (ownersResults.getTotalElements() == 1) {
-            // 1 teacher found
-            teacher = ownersResults.iterator().next();
-            return "redirect:/student/teachers/" + teacher.getId();
-        } else {
-            // multiple owners found
-            return addPaginationModel(page, model, ownersResults);
-        }
-    }
-
-    public Page<Teacher> findTeachersByLastName(String lastName, int page) {
-        int pageSize = 5;
-        Pageable pageable = PageRequest.of(page - 1, pageSize);
-        return teacherRepository.findByLastNameStartingWith(lastName, pageable);
-    }
-
-    private String addPaginationModel(int page, Model model, Page<Teacher> paginated) {
-        model.addAttribute("teachers", paginated);
-        List<Teacher> teachers = paginated.getContent();
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", paginated.getTotalPages());
-        model.addAttribute("totalItems", paginated.getTotalElements());
-        model.addAttribute("teachers", teachers);
-        return "student/teachers-list";
+    public String processFindForm() {
+        return "redirect:/student/teachers/find";
     }
 }
