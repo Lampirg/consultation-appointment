@@ -99,6 +99,7 @@ public class StudentController {
         return "redirect:/student/teachers/" + teacherId;
     }
 
+    // TODO: make not search bar but just list
     @GetMapping("/teachers/find")
     public String findTeacher() {
         return "student/find-teacher";
