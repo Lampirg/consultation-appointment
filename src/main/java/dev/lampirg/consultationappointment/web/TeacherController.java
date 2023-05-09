@@ -101,7 +101,9 @@ public class TeacherController {
     @PostMapping("/pattern/add")
     public String addPattern(ConsultationPattern pattern, @AuthenticationPrincipal Teacher teacher) {
         pattern.setTeacher(teacherRepository.findById(teacher.getId()).orElseThrow());
+        pattern.setFrom(pattern.getConsultationInfo().getDate());
         consultationScheduler.addPattern(pattern);
+        consultationScheduler.savePattern(pattern);
         return "redirect:/teacher/profile";
     }
 

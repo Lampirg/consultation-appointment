@@ -1,5 +1,7 @@
 package dev.lampirg.consultationappointment.service.teacher;
 
+import dev.lampirg.consultationappointment.data.schedule.PatternSchedule;
+import dev.lampirg.consultationappointment.data.schedule.PatternScheduleRepository;
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import dev.lampirg.consultationappointment.web.fetch.ConsultationPattern;
@@ -7,31 +9,41 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
+import java.time.temporal.TemporalAmount;
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
 public class ConsultationScheduler {
 
+    private PatternScheduleRepository patternScheduleRepository;
     private ConsultationMaker consultationMaker;
     private TaskScheduler scheduler;
     private Map<Integer, List<ConsultationPattern>> patternsMap = new HashMap<>();
     private Map<ConsultationPattern, ScheduledFuture<?>> schedulesMap = new HashMap<>();
 
-    public ConsultationScheduler(ConsultationMaker consultationMaker, TaskScheduler scheduler) {
+    public ConsultationScheduler(PatternScheduleRepository patternScheduleRepository, ConsultationMaker consultationMaker, TaskScheduler scheduler) {
+        this.patternScheduleRepository = patternScheduleRepository;
         this.consultationMaker = consultationMaker;
         this.scheduler = scheduler;
     }
 
+    public void savePattern(ConsultationPattern pattern) {
+        patternScheduleRepository.save(PatternSchedule.fromConsultationPattern(pattern));
+    }
+
     public void addPattern(ConsultationPattern pattern) {
+        while (pattern.getConsultationInfo().getDate().isBefore(LocalDate.now()))
+            pattern.getConsultationInfo().setDate(pattern.getConsultationInfo().getDate().plusDays(7));
         patternsMap.putIfAbsent(pattern.getTeacher().getId(), new ArrayList<>());
         Instant instant = LocalDateTime.of(pattern.getConsultationInfo().getDate(),
                 pattern.getConsultationInfo().getEndTime())
                 .atZone(ZoneId.of("Europe/Moscow")).toInstant();
         ScheduledFuture<?> future = scheduler.scheduleAtFixedRate(() -> {
+            pattern.getConsultationInfo().setDate(pattern.getConsultationInfo().getDate().plusDays(7));
             DatePeriod datePeriod = new DatePeriod(pattern.getConsultationInfo().getClassroom(),
-                    LocalDateTime.of(LocalDate.now().plusDays(7), pattern.getConsultationInfo().getStartTime()),
-                    LocalDateTime.of(LocalDate.now().plusDays(7), pattern.getConsultationInfo().getEndTime()));
+                    LocalDateTime.of(pattern.getConsultationInfo().getDate(), pattern.getConsultationInfo().getStartTime()),
+                    LocalDateTime.of(pattern.getConsultationInfo().getDate(), pattern.getConsultationInfo().getEndTime()));
             consultationMaker.createConsultation(pattern.getTeacher(), datePeriod);
         }, instant, Duration.ofDays(7));
         patternsMap.get(pattern.getTeacher().getId()).add(pattern);
