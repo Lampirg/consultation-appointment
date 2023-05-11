@@ -8,7 +8,6 @@ import dev.lampirg.consultationappointment.service.teacher.ConsultationScheduler
 import dev.lampirg.consultationappointment.web.fetch.ConsultationInfo;
 import dev.lampirg.consultationappointment.web.fetch.ConsultationPattern;
 import dev.lampirg.consultationappointment.web.fetch.ConsultationPatternListWrapper;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -101,7 +100,7 @@ public class TeacherController {
     @PostMapping("/pattern/add")
     public String addPattern(ConsultationPattern pattern, @AuthenticationPrincipal Teacher teacher) {
         pattern.setTeacher(teacherRepository.findById(teacher.getId()).orElseThrow());
-        pattern.setFrom(pattern.getConsultationInfo().getDate());
+        pattern.setFromDate(pattern.getConsultationInfo().getDate());
         consultationScheduler.addPattern(pattern);
         consultationScheduler.savePattern(pattern);
         return "redirect:/teacher/profile";

@@ -29,7 +29,7 @@ public class ConsultationScheduler {
     }
 
     public void savePattern(ConsultationPattern pattern) {
-        patternScheduleRepository.save(PatternSchedule.fromConsultationPattern(pattern));
+        patternScheduleRepository.save(new PatternSchedule(pattern));
     }
 
     public void addPattern(ConsultationPattern pattern) {

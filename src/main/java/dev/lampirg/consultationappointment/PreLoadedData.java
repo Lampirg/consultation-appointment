@@ -8,6 +8,7 @@ import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import dev.lampirg.consultationappointment.data.teacher.TeacherRepository;
 import dev.lampirg.consultationappointment.service.teacher.ConsultationScheduler;
+import dev.lampirg.consultationappointment.web.fetch.ConsultationInfo;
 import dev.lampirg.consultationappointment.web.fetch.ConsultationPattern;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -61,15 +62,17 @@ public class PreLoadedData  {
                     LocalDateTime.of(2023, 5, 15, 12, 15))
             );
             teacherRepository.save(teacher);
-            PatternSchedule schedule = new PatternSchedule();
-            schedule.setFromDate(LocalDate.now());
-            schedule.setDate(LocalDate.now());
-            schedule.setUntil(LocalDate.now().plusDays(14));
-            schedule.setTeacher(teacher);
-            schedule.setStartTime(LocalTime.now().minusHours(1));
-            schedule.setEndTime(LocalTime.now().plusMinutes(1));
-            schedule.setClassroom("1-105");
-            consultationScheduler.savePattern(ConsultationPattern.fromPatternSchedule(schedule));
+            ConsultationPattern pattern = new ConsultationPattern();
+            ConsultationInfo info = new ConsultationInfo();
+            info.setClassroom("1-101");
+            info.setDate(LocalDate.now());
+            info.setStartTime(LocalTime.now().minusHours(1));
+            info.setEndTime(LocalTime.now().plusMinutes(1));
+            pattern.setConsultationInfo(info);
+            pattern.setUntil(LocalDate.now().plusDays(14));
+            pattern.setFromDate(LocalDate.now());
+            pattern.setTeacher(teacher);
+            consultationScheduler.savePattern(pattern);
             for (int i = 0; i < 15; i++) {
                 String firstName = UUID.randomUUID().toString().substring(0, 5);
                 String lastName = "Королевич";

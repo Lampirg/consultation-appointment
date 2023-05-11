@@ -1,33 +1,26 @@
 package dev.lampirg.consultationappointment.web.fetch;
 
-import dev.lampirg.consultationappointment.data.schedule.PatternSchedule;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
 @Data
+@Embeddable
 public class ConsultationPattern {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate until;
-    private LocalDate from;
+    private LocalDate fromDate;
+    @Embedded
     private ConsultationInfo consultationInfo;
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
-
-    public static ConsultationPattern fromPatternSchedule(PatternSchedule schedule) {
-        ConsultationPattern pattern = new ConsultationPattern();
-        pattern.setFrom(schedule.getFromDate());
-        pattern.setUntil(schedule.getUntil());
-        pattern.setTeacher(schedule.getTeacher());
-        ConsultationInfo info = new ConsultationInfo();
-        info.setDate(schedule.getDate());
-        info.setClassroom(schedule.getClassroom());
-        info.setStartTime(schedule.getStartTime());
-        info.setEndTime(schedule.getEndTime());
-        pattern.setConsultationInfo(info);
-        return pattern;
-    }
 
 }
