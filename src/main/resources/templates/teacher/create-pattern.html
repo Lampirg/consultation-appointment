@@ -5,6 +5,7 @@
     <title>Создание расписания плановой консультации</title>
 </head>
 <body>
+<div th:replace="~{header :: teacher}"></div>
 <form th:action="@{/teacher/pattern/add}" th:object="${pattern}" method="post">
   <label for="from">На неделю вперёд начиная с:</label>
   <input type="date" id="from" th:field="*{consultationInfo.date}" />

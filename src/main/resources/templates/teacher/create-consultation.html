@@ -5,6 +5,7 @@
     <title>Создание консультации</title>
 </head>
 <body>
+<div th:replace="~{header :: teacher}"></div>
 <form th:action="@{/teacher/consultation/add}" th:object="${consultation}" method="post">
     <label for="date">Дата консультации:</label>
     <input type="date" id="date" th:field="*{date}" />
