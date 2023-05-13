@@ -52,11 +52,12 @@ public class StudentSecurityConfig {
                     .failureUrl("/student/login?hasError=true")
                     .usernameParameter("email")
                     .loginProcessingUrl("/student/login")
+                    .defaultSuccessUrl("/student/profile")
                     .permitAll()
                     .and()
                 .logout()
                     .logoutUrl("/student/logout")
-                    .logoutSuccessUrl("/student/login")
+                    .logoutSuccessUrl("/home")
                     .and()
                 .httpBasic();
         // @formatter:on

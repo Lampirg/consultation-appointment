@@ -51,11 +51,12 @@ public class TeacherSecurityConfig {
                     .failureUrl("/teacher/login?hasError=true")
                     .usernameParameter("email")
                     .loginProcessingUrl("/teacher/login")
+                    .defaultSuccessUrl("/teacher/profile")
                     .permitAll()
                     .and()
                 .logout()
                     .logoutUrl("/teacher/logout")
-                    .logoutSuccessUrl("/teacher/login")
+                    .logoutSuccessUrl("/home")
                     .and()
                 .httpBasic();
         // @formatter:on
