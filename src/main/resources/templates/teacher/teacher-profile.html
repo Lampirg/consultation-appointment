@@ -7,12 +7,12 @@
 </head>
 <body>
 <div th:replace="~{header :: teacher}"></div>
+<h2>Консультации</h2>
 <nav>
     <a th:href="@{pattern}" class="btn btn-primary">Расписание плановых консультаций</a>
     <a th:href="@{pattern/add}" class="btn btn-primary">Создать регулярную консультацию</a>
     <a th:href="@{consultation/add}" class="btn btn-primary">Создать внеплановую консультацию</a>
 </nav>
-<h2>Консультации</h2>
 <table class="table table-striped">
     <tr>
         <th>Дата</th>
