@@ -7,16 +7,10 @@ import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import dev.lampirg.consultationappointment.data.teacher.TeacherRepository;
 import dev.lampirg.consultationappointment.service.student.AppointmentMaker;
-import dev.lampirg.consultationappointment.service.student.SimpleAppointmentMaker;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.ModelAndView;
@@ -48,7 +42,7 @@ public class StudentController {
     public String getStudentProfile(@AuthenticationPrincipal Student student, Model model) {
         student = studentRepository.findById(student.getId()).orElseThrow();
         model.addAttribute("student", student);
-        List<Appointment> appointments = new ArrayList<>(student.getAppointment());
+        List<Appointment> appointments = new ArrayList<>(student.getAppointments());
         appointments.sort(Comparator.comparing(Appointment::getStartTime));
         model.addAttribute("appointments", appointments);
         return "student/student-profile";
@@ -60,8 +54,8 @@ public class StudentController {
         Teacher teacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
         modelAndView.addObject(teacher);
-        Set<Appointment> appointments = new HashSet<>(studentRepository.findById(student.getId()).orElseThrow().getAppointment());
-        appointments.retainAll(teacher.getAppointment());
+        Set<Appointment> appointments = new HashSet<>(studentRepository.findById(student.getId()).orElseThrow().getAppointments());
+        appointments.retainAll(teacher.getAppointments());
         List<Appointment> appointmentList = new ArrayList<>(appointments);
         appointmentList.sort(Comparator.comparing(Appointment::getStartTime));
         modelAndView.addObject("appointments", appointmentList);

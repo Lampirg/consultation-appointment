@@ -33,7 +33,7 @@ public class Teacher extends Person {
     private Set<DatePeriod> datePeriods = new HashSet<>();
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER)
-    private Set<Appointment> appointment = new HashSet<>();
+    private Set<Appointment> appointments = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

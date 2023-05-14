@@ -38,7 +38,7 @@ public class Student extends Person {
     private String groupName;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private Set<Appointment> appointment = new HashSet<>();
+    private Set<Appointment> appointments = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -37,7 +37,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
                 datePeriod.getUnoccupiedTime().minus(INTERVAL)
         );
         appointment = appointmentRepository.save(appointment);
-        studentRepository.findById(appointment.getStudent().getId()).get().getAppointment().add(appointment);
+        studentRepository.findById(appointment.getStudent().getId()).get().getAppointments().add(appointment);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
         );
         appointmentRepository.save(appointment);
         appointmentRepository.delete(appointment);
-        studentRepository.findById(appointment.getStudent().getId()).get().getAppointment().remove(appointment);
+        studentRepository.findById(appointment.getStudent().getId()).get().getAppointments().remove(appointment);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
     public boolean isAvailable(Teacher teacher, Student student, DatePeriod datePeriod) {
         if (!isAvailable(datePeriod))
             return false;
-        return student.getAppointment().stream()
+        return student.getAppointments().stream()
                 .map(Appointment::getAppointmentPeriod)
                 .noneMatch(appointmentPeriod -> appointmentPeriod.equals(datePeriod));
     }
