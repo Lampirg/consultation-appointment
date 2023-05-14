@@ -1,0 +1,23 @@
+h1, h2 {
+    text-align: center;
+}
+
+form {
+	width: 50%;
+	margin: 0 auto;
+	text-align: center;
+}
+
+label {
+	display: block;
+    margin-bottom: 16px;
+}
+
+input[type="text"], input[type="password"] {
+	padding: 5px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}

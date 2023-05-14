@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Выход</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
-<p>Вы уверены, что хотите выйти?</p>
 <form method="POST" th:action="@{${logout}}" id="loginForm">
+    <p>Вы уверены, что хотите выйти?</p>
     <input type="submit" value="Да"/>
 </form>
 </body>

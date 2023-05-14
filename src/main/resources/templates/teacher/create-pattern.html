@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Создание расписания плановой консультации</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <div th:replace="~{header :: teacher}"></div>
 <form th:action="@{/teacher/pattern/add}" th:object="${pattern}" method="post">
-  <label for="from">На неделю вперёд начиная с:</label>
-  <input type="date" id="from" th:field="*{consultationInfo.date}" />
+    <label for="from">На неделю вперёд начиная с:</label>
+    <input type="date" id="from" th:field="*{consultationInfo.date}"/>
 
-  <label for="until">До:</label>
-  <input type="date" id="until" th:field="*{until}" />
+    <label for="until">До:</label>
+    <input type="date" id="until" th:field="*{until}"/>
 
-  <label for="classroom">Кабинет:</label>
-  <input type="text" id="classroom" th:field="*{consultationInfo.classroom}" />
+    <label for="classroom">Кабинет:</label>
+    <input type="text" id="classroom" th:field="*{consultationInfo.classroom}"/>
 
-  <label for="startTime">Время начала консультации:</label>
-  <input type="time" id="startTime" th:field="*{consultationInfo.startTime}" />
+    <label for="startTime">Время начала консультации:</label>
+    <input type="time" id="startTime" th:field="*{consultationInfo.startTime}"/>
 
-  <label for="endTime">Время конца консультации:</label>
-  <input type="time" id="endTime" th:field="*{consultationInfo.endTime}" />
+    <label for="endTime">Время конца консультации:</label>
+    <input type="time" id="endTime" th:field="*{consultationInfo.endTime}"/>
 
-  <button type="submit">Создать консультацию</button>
+    <button type="submit">Создать консультацию</button>
 </form>
 </body>
 </html>
