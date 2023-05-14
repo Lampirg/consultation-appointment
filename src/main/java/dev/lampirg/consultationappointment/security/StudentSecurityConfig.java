@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class StudentSecurityConfig {
 
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     public StudentSecurityConfig(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
