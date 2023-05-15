@@ -1,5 +1,4 @@
 spring:
-
   profiles:
     active:
       - dev
@@ -7,6 +6,6 @@ spring:
 ---
 spring:
   config:
+    import: email.yml
     activate:
-      on-profile: prod
-      import: email.yml
+      on-profile: prod & email
