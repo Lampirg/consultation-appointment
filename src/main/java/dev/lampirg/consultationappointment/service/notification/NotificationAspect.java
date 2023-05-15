@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Aspect
 @Component
@@ -30,6 +31,7 @@ public class NotificationAspect {
 
     @After("execution(* dev.lampirg.consultationappointment.service.student.AppointmentMaker.makeAppointment(..)) && " +
             "args(teacher,..,datePeriod)")
+    @Transactional(readOnly = true)
     public void notifyTeacherAboutAppointment(Teacher teacher, DatePeriod datePeriod) {
         if (!datePeriod.getAppointments().isEmpty())
             return;
@@ -50,6 +52,7 @@ public class NotificationAspect {
     }
 
     @After("execution(* dev.lampirg.consultationappointment.service.teacher.ConsultationMaker.deleteConsultation(..))")
+    @Transactional(readOnly = true)
     public void notifyStudentsAboutDeletion(JoinPoint joinPoint) throws Throwable {
         DatePeriod datePeriod = (DatePeriod) joinPoint.getArgs()[1];
         SimpleMailMessage template = new SimpleMailMessage();

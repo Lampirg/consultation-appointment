@@ -30,6 +30,7 @@ public class ConsultationScheduler {
         this.scheduler = scheduler;
     }
 
+    @Transactional
     public void savePattern(ConsultationPattern pattern) {
         PatternSchedule schedule = new PatternSchedule(pattern);
         patternScheduleRepository.save(schedule);

@@ -7,6 +7,7 @@ import dev.lampirg.consultationappointment.data.student.StudentRepository;
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
     }
 
     @Override
+    @Transactional
     public void makeAppointment(Teacher teacher, Student student, DatePeriod datePeriod) {
         if (!isAvailable(teacher, student, datePeriod))
             throw new IllegalArgumentException("Not enough time for new appointment");
@@ -41,6 +43,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
     }
 
     @Override
+    @Transactional
     public void deleteAppointmentById(Long id) {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow();
         appointment.getAppointmentPeriod().setUnoccupiedTime(
