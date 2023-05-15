@@ -1,5 +1,6 @@
 package dev.lampirg.consultationappointment.web;
 
+import dev.lampirg.consultationappointment.data.teacher.DataForTeacher;
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import dev.lampirg.consultationappointment.data.teacher.TeacherRepository;
@@ -27,13 +28,13 @@ import java.util.List;
 public class TeacherController {
 
     private ConsultationMaker consultationMaker;
-    private TeacherRepository teacherRepository;
+    private DataForTeacher dataForTeacher;
     private ConsultationScheduler consultationScheduler;
     private ConsultationPatternListWrapper wrapper;
 
-    public TeacherController(ConsultationMaker consultationMaker, TeacherRepository teacherRepository, ConsultationScheduler consultationScheduler) {
+    public TeacherController(ConsultationMaker consultationMaker, DataForTeacher dataForTeacher, ConsultationScheduler consultationScheduler) {
         this.consultationMaker = consultationMaker;
-        this.teacherRepository = teacherRepository;
+        this.dataForTeacher = dataForTeacher;
         this.consultationScheduler = consultationScheduler;
     }
 
@@ -44,7 +45,7 @@ public class TeacherController {
 
     @GetMapping("/profile")
     public String getTeacherProfile(@AuthenticationPrincipal Teacher teacher, Model model) {
-        teacher = teacherRepository.findById(teacher.getId()).orElseThrow();
+        teacher = dataForTeacher.findTeacherById(teacher.getId());
         model.addAttribute("teacher", teacher);
         List<DatePeriod> datePeriods = new ArrayList<>(teacher.getDatePeriods());
         datePeriods.sort(Comparator.comparing(DatePeriod::getStartTime));
@@ -54,8 +55,8 @@ public class TeacherController {
 
     @PostMapping("/{consultationId}/delete")
     public String deleteConsultation(@PathVariable Long consultationId, @AuthenticationPrincipal Teacher teacher) {
-        DatePeriod datePeriod = teacherRepository.findDatePeriodById(consultationId).orElseThrow();
-        consultationMaker.deleteConsultation(teacherRepository.findById(teacher.getId()).orElseThrow(), datePeriod);
+        DatePeriod datePeriod = dataForTeacher.findDatePeriodById(consultationId);
+        consultationMaker.deleteConsultation(dataForTeacher.findTeacherById(teacher.getId()), datePeriod);
         return "redirect:/teacher/profile";
     }
 
@@ -72,11 +73,9 @@ public class TeacherController {
                 LocalDateTime.of(consultation.getDate(), consultation.getStartTime()),
                 LocalDateTime.of(consultation.getDate(), consultation.getEndTime())
         );
-        consultationMaker.createConsultation(teacherRepository.findById(teacher.getId()).orElseThrow(), datePeriod);
+        consultationMaker.createConsultation(dataForTeacher.findTeacherById(teacher.getId()), datePeriod);
         return "redirect:/teacher/profile";
     }
-
-    // TODO: methods for creating, displaying and deleting consultation patterns ("/pattern/add" and "/pattern")
 
     @GetMapping("/pattern")
     public String openPatternPage(Model model, @AuthenticationPrincipal Teacher teacher) {
@@ -99,7 +98,7 @@ public class TeacherController {
 
     @PostMapping("/pattern/add")
     public String addPattern(ConsultationPattern pattern, @AuthenticationPrincipal Teacher teacher) {
-        pattern.setTeacher(teacherRepository.findById(teacher.getId()).orElseThrow());
+        pattern.setTeacher(dataForTeacher.findTeacherById(teacher.getId()));
         pattern.setFromDate(pattern.getConsultationInfo().getDate());
         consultationScheduler.addPattern(pattern);
         consultationScheduler.savePattern(pattern);
