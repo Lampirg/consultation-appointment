@@ -7,6 +7,7 @@ import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import dev.lampirg.consultationappointment.web.fetch.ConsultationPattern;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
 import java.time.temporal.TemporalAmount;
@@ -21,6 +22,7 @@ public class ConsultationScheduler {
     private TaskScheduler scheduler;
     private Map<Integer, List<ConsultationPattern>> patternsMap = new HashMap<>();
     private Map<ConsultationPattern, ScheduledFuture<?>> schedulesMap = new HashMap<>();
+    private Map<ConsultationPattern, PatternSchedule> patternScheduleMap = new HashMap<>();
 
     public ConsultationScheduler(PatternScheduleRepository patternScheduleRepository, ConsultationMaker consultationMaker, TaskScheduler scheduler) {
         this.patternScheduleRepository = patternScheduleRepository;
@@ -29,7 +31,9 @@ public class ConsultationScheduler {
     }
 
     public void savePattern(ConsultationPattern pattern) {
-        patternScheduleRepository.save(new PatternSchedule(pattern));
+        PatternSchedule schedule = new PatternSchedule(pattern);
+        patternScheduleRepository.save(schedule);
+        patternScheduleMap.put(pattern, schedule);
     }
 
     public void addPattern(ConsultationPattern pattern) {
@@ -59,6 +63,8 @@ public class ConsultationScheduler {
         schedulesMap.get(pattern).cancel(false);
         schedulesMap.remove(pattern);
         patternsMap.get(pattern.getTeacher().getId()).remove(pattern);
+        patternScheduleRepository.delete(patternScheduleMap.get(pattern));
+        patternScheduleMap.remove(pattern);
     }
 
     private void scheduleRemove(ConsultationPattern pattern) {
