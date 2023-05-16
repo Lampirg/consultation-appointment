@@ -17,11 +17,22 @@ import java.util.concurrent.ScheduledFuture;
 @Service
 public class ConsultationScheduler {
 
+    private static class Pair {
+        ScheduledFuture<?> start;
+        ScheduledFuture<?> end;
+        public Pair(ScheduledFuture<?> start) {
+            this.start = start;
+        }
+        public List<ScheduledFuture<?>> getAll() {
+            return List.of(start, end);
+        }
+    }
+
     private PatternScheduleRepository patternScheduleRepository;
     private ConsultationMaker consultationMaker;
     private TaskScheduler scheduler;
     private Map<Integer, List<ConsultationPattern>> patternsMap = new HashMap<>();
-    private Map<ConsultationPattern, ScheduledFuture<?>> schedulesMap = new HashMap<>();
+    private Map<ConsultationPattern, Pair> schedulesMap = new HashMap<>();
     private Map<ConsultationPattern, PatternSchedule> patternScheduleMap = new HashMap<>();
 
     public ConsultationScheduler(PatternScheduleRepository patternScheduleRepository, ConsultationMaker consultationMaker, TaskScheduler scheduler) {
@@ -52,7 +63,7 @@ public class ConsultationScheduler {
             consultationMaker.createConsultation(pattern.getTeacher(), datePeriod);
         }, instant, Duration.ofDays(7));
         patternsMap.get(pattern.getTeacher().getId()).add(pattern);
-        schedulesMap.put(pattern, future);
+        schedulesMap.put(pattern, new Pair(future));
         scheduleRemove(pattern);
     }
 
@@ -60,8 +71,9 @@ public class ConsultationScheduler {
         return Optional.ofNullable(patternsMap.get(teacher.getId()));
     }
 
+    @Transactional
     public void removePattern(ConsultationPattern pattern) {
-        schedulesMap.get(pattern).cancel(false);
+        schedulesMap.get(pattern).getAll().forEach(future -> future.cancel(false));
         schedulesMap.remove(pattern);
         patternsMap.get(pattern.getTeacher().getId()).remove(pattern);
         patternScheduleRepository.delete(patternScheduleMap.get(pattern));
