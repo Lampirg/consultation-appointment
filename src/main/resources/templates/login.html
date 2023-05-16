@@ -11,9 +11,7 @@
 
 <div class="alert" th:if="${error}" th:text="${error}"></div>
 
-<!-- tag::thAction[] -->
 <form method="POST" th:action="@{${login}}" id="loginForm" class="center">
-    <!-- end::thAction[] -->
     <label for="email">Электронная почта: </label>
     <input type="text" name="email" id="email" required autofocus/><br/>
 
