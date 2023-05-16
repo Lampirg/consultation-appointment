@@ -22,11 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class NotificationAspect {
 
     private EmailService<SimpleMailMessage> emailService;
-    private TeacherRepository teacherRepository;
 
-    public NotificationAspect(EmailService<SimpleMailMessage> emailService, TeacherRepository teacherRepository) {
+    public NotificationAspect(EmailService<SimpleMailMessage> emailService) {
         this.emailService = emailService;
-        this.teacherRepository = teacherRepository;
     }
 
     @After("execution(* dev.lampirg.consultationappointment.service.student.AppointmentMaker.makeAppointment(..)) && " +
