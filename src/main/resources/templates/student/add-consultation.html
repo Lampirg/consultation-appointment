@@ -20,8 +20,8 @@
         <tr>
             <td th:text="${datePeriod.classroom}"></td>
             <td th:text="${#temporals.format(datePeriod.startTime, 'dd.MM.yy')}"></td>
-            <td th:text="${#temporals.format(datePeriod.startTime, 'hh:mm')}"></td>
-            <td th:text="${#temporals.format(datePeriod.endTime, 'hh:mm')}"></td>
+            <td th:text="${#temporals.format(datePeriod.startTime, 'HH:mm')}"></td>
+            <td th:text="${#temporals.format(datePeriod.endTime, 'HH:mm')}"></td>
             <td>
                 <input type="hidden" th:value="${datePeriod.id}" id="datePeriodId" name="datePeriodId"/>
                 <button type="submit">Записаться на консультацию</button>

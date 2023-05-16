@@ -21,8 +21,8 @@
         <td th:text="${#temporals.format(pattern.until, 'dd.MM.yy')}"></td>
         <td th:text="${#temporals.dayOfWeekName(pattern.consultationInfo.date)}"></td>
         <td th:text="${pattern.consultationInfo.classroom}"></td>
-        <td th:text="${#temporals.format(pattern.consultationInfo.startTime, 'hh:mm')}"></td>
-        <td th:text="${#temporals.format(pattern.consultationInfo.endTime, 'hh:mm')}"></td>
+        <td th:text="${#temporals.format(pattern.consultationInfo.startTime, 'HH:mm')}"></td>
+        <td th:text="${#temporals.format(pattern.consultationInfo.endTime, 'HH:mm')}"></td>
         <td>
             <form th:action="@{/teacher/pattern/delete}" method="post">
                 <input type="hidden" th:value="${iterStat.index}" id="index" name="index"/>

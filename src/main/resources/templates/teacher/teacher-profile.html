@@ -23,8 +23,8 @@
     </tr>
     <tr th:each="consultation : ${consultations}">
         <td th:text="${#temporals.format(consultation.startTime, 'dd.MM.yy')}"></td>
-        <td th:text="${#temporals.format(consultation.startTime, 'hh:mm')}"></td>
-        <td th:text="${#temporals.format(consultation.endTime, 'hh:mm')}"></td>
+        <td th:text="${#temporals.format(consultation.startTime, 'HH:mm')}"></td>
+        <td th:text="${#temporals.format(consultation.endTime, 'HH:mm')}"></td>
         <td th:text="${consultation.classroom}"></td>
         <td th:text="${#lists.size(consultation.appointments)}"></td>
         <td>
