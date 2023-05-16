@@ -2,10 +2,14 @@ h1, h2 {
     text-align: center;
 }
 
-form {
+form.center {
 	width: 50%;
 	margin: 0 auto;
 	text-align: center;
+}
+
+form {
+	display: table;
 }
 
 label {
@@ -20,4 +24,28 @@ input[type="text"], input[type="password"] {
 	box-sizing: border-box;
 	border: 1px solid #ccc;
 	border-radius: 4px;
+}
+
+a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3366ff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+nav a:hover {
+	background-color: ##3366f0;
+}
+
+.login-links {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 10px 20px;
+    background-color: ##3366ff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 40px;
 }
