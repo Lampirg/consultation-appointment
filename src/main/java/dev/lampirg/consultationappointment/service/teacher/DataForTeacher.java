@@ -1,5 +1,8 @@
-package dev.lampirg.consultationappointment.data.teacher;
+package dev.lampirg.consultationappointment.service.teacher;
 
+import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
+import dev.lampirg.consultationappointment.data.teacher.Teacher;
+import dev.lampirg.consultationappointment.data.teacher.TeacherRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
