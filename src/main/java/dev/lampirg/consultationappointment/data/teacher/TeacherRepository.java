@@ -8,10 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface TeacherRepository extends PersonRepository<Teacher> {
-
-    Page<Teacher> findByLastNameStartingWith(String lastName, Pageable pageable);
-
     @Query("select t from DatePeriod t where t.id = ?1")
     Optional<DatePeriod> findDatePeriodById(Long datePeriodId);
-
 }

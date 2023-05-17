@@ -2,8 +2,13 @@
 
 <html xmlns:th="https://www.thymeleaf.org">
 
-<body>
+<head>
+    <title>Преподаватель</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
 
+<body>
+<div th:replace="~{header :: student}"></div>
 <h2>Преподаватель</h2>
 
 <table class="table table-striped" th:object="${teacher}">
@@ -24,14 +29,16 @@
 
 <table class="table table-striped">
     <tr>
-        <th>Кабинет</th>
+        <th>Дата</th>
         <th>Начало</th>
         <th>Конец</th>
+        <th>Кабинет</th>
     </tr>
     <tr th:each="appointment : ${appointments}">
+        <td th:text="${#temporals.format(appointment.appointmentPeriod.startTime, 'dd.MM.yy')}"></td>
+        <td th:text="${#temporals.format(appointment.appointmentPeriod.startTime, 'HH:mm')}"></td>
+        <td th:text="${#temporals.format(appointment.appointmentPeriod.endTime, 'HH:mm')}"></td>
         <td th:text="${appointment.appointmentPeriod.classroom}"></td>
-        <td th:text="${#temporals.format(appointment.appointmentPeriod.startTime, 'dd.MM.yy hh:mm')}"></td>
-        <td th:text="${#temporals.format(appointment.appointmentPeriod.endTime, 'dd.MM.yy hh:mm')}"></td>
         <td>
             <form th:action="@{__${teacher.id}__/delete/__${appointment.id}__}" method="post">
                 <button type="submit">Отменить запись на консультацию</button>

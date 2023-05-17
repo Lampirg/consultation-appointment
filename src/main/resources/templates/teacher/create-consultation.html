@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Создание консультации</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
+<div th:replace="~{header :: teacher}"></div>
 <form th:action="@{/teacher/consultation/add}" th:object="${consultation}" method="post">
     <label for="date">Дата консультации:</label>
     <input type="date" id="date" th:field="*{date}" />

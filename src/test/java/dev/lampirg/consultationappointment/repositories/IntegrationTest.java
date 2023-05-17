@@ -47,7 +47,7 @@ public class IntegrationTest {
         assertEquals(1, studentRepository.findAll().size());
         assertEquals(1, teacherRepository.findAll().size());
         assertEquals(1, appointmentRepository.findAll().size());
-        assertEquals(studentRepository.findAll().get(0).getAppointment().stream().toList().get(0),
+        assertEquals(studentRepository.findAll().get(0).getAppointments().stream().toList().get(0),
                 appointmentRepository.findAll().get(0));
     }
 

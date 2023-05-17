@@ -29,11 +29,11 @@ public class Teacher extends Person {
         super(firstName, lastName, patronymic, email, password);
     }
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<DatePeriod> datePeriods = new HashSet<>();
 
-    @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER)
-    private Set<Appointment> appointment = new HashSet<>();
+    @OneToMany(mappedBy = "teacher")
+    private Set<Appointment> appointments = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

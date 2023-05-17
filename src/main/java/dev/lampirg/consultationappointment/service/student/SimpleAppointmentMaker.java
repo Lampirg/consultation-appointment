@@ -7,6 +7,7 @@ import dev.lampirg.consultationappointment.data.student.StudentRepository;
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
     }
 
     @Override
+    @Transactional
     public void makeAppointment(Teacher teacher, Student student, DatePeriod datePeriod) {
         if (!isAvailable(teacher, student, datePeriod))
             throw new IllegalArgumentException("Not enough time for new appointment");
@@ -37,10 +39,11 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
                 datePeriod.getUnoccupiedTime().minus(INTERVAL)
         );
         appointment = appointmentRepository.save(appointment);
-        studentRepository.findById(appointment.getStudent().getId()).get().getAppointment().add(appointment);
+        studentRepository.findById(appointment.getStudent().getId()).get().getAppointments().add(appointment);
     }
 
     @Override
+    @Transactional
     public void deleteAppointmentById(Long id) {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow();
         appointment.getAppointmentPeriod().setUnoccupiedTime(
@@ -48,7 +51,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
         );
         appointmentRepository.save(appointment);
         appointmentRepository.delete(appointment);
-        studentRepository.findById(appointment.getStudent().getId()).get().getAppointment().remove(appointment);
+        studentRepository.findById(appointment.getStudent().getId()).get().getAppointments().remove(appointment);
     }
 
     @Override
@@ -62,7 +65,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
     public boolean isAvailable(Teacher teacher, Student student, DatePeriod datePeriod) {
         if (!isAvailable(datePeriod))
             return false;
-        return student.getAppointment().stream()
+        return student.getAppointments().stream()
                 .map(Appointment::getAppointmentPeriod)
                 .noneMatch(appointmentPeriod -> appointmentPeriod.equals(datePeriod));
     }

@@ -24,7 +24,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class Student extends Person {
 
@@ -37,8 +36,8 @@ public class Student extends Person {
     @Pattern(regexp = "[А-Я]{3}-[0-9]{3}")
     private String groupName;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private Set<Appointment> appointment = new HashSet<>();
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
+    private Set<Appointment> appointments = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

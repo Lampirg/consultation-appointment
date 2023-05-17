@@ -7,16 +7,11 @@ import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import dev.lampirg.consultationappointment.data.teacher.TeacherRepository;
 import dev.lampirg.consultationappointment.service.student.AppointmentMaker;
-import dev.lampirg.consultationappointment.service.student.SimpleAppointmentMaker;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import dev.lampirg.consultationappointment.service.student.DataForStudent;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,27 +23,24 @@ import java.util.stream.Collectors;
 @RequestMapping("/student")
 public class StudentController {
 
-    private TeacherRepository teacherRepository;
+    private DataForStudent dataForStudent;
     private AppointmentMaker appointmentMaker;
-    private StudentRepository studentRepository;
 
-    public StudentController(TeacherRepository teacherRepository, AppointmentMaker appointmentMaker, StudentRepository studentRepository) {
-        this.teacherRepository = teacherRepository;
+    public StudentController(DataForStudent dataForStudent, AppointmentMaker appointmentMaker) {
+        this.dataForStudent = dataForStudent;
         this.appointmentMaker = appointmentMaker;
-        this.studentRepository = studentRepository;
     }
 
     @ModelAttribute("teacher")
     public Teacher findTeacher(@PathVariable(name = "id", required = false) Integer id) {
-        return id == null ? new Teacher() : teacherRepository.findById(id)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        return id == null ? new Teacher() : dataForStudent.findTeacherById(id);
     }
 
     @GetMapping("/profile")
     public String getStudentProfile(@AuthenticationPrincipal Student student, Model model) {
-        student = studentRepository.findById(student.getId()).orElseThrow();
+        student = dataForStudent.findStudentById(student.getId());
         model.addAttribute("student", student);
-        List<Appointment> appointments = new ArrayList<>(student.getAppointment());
+        List<Appointment> appointments = new ArrayList<>(student.getAppointments());
         appointments.sort(Comparator.comparing(Appointment::getStartTime));
         model.addAttribute("appointments", appointments);
         return "student/student-profile";
@@ -57,11 +49,10 @@ public class StudentController {
     @GetMapping("/teachers/{id}")
     public ModelAndView openTeacherPage(@PathVariable("id") int id, @AuthenticationPrincipal Student student) {
         ModelAndView modelAndView = new ModelAndView("student/teacher-details");
-        Teacher teacher = teacherRepository.findById(id)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        Teacher teacher = dataForStudent.findTeacherById(id);
         modelAndView.addObject(teacher);
-        Set<Appointment> appointments = new HashSet<>(studentRepository.findById(student.getId()).orElseThrow().getAppointment());
-        appointments.retainAll(teacher.getAppointment());
+        Set<Appointment> appointments = new HashSet<>(dataForStudent.findStudentById(student.getId()).getAppointments());
+        appointments.retainAll(teacher.getAppointments());
         List<Appointment> appointmentList = new ArrayList<>(appointments);
         appointmentList.sort(Comparator.comparing(Appointment::getStartTime));
         modelAndView.addObject("appointments", appointmentList);
@@ -72,10 +63,9 @@ public class StudentController {
     public ModelAndView openAddConsultationPage(@PathVariable("id") int id,
                                                 @AuthenticationPrincipal Student student) {
         ModelAndView modelAndView = new ModelAndView("student/add-consultation");
-        Teacher teacher = teacherRepository.findById(id)
-                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        Teacher teacher = dataForStudent.findTeacherById(id);
         List<DatePeriod> datePeriods = teacher.getDatePeriods().stream()
-                .filter(datePeriod -> appointmentMaker.isAvailable(teacher, studentRepository.findById(student.getId()).orElseThrow(), datePeriod))
+                .filter(datePeriod -> appointmentMaker.isAvailable(teacher, dataForStudent.findStudentById(student.getId()), datePeriod))
                 .sorted(Comparator.comparing(DatePeriod::getStartTime))
                 .collect(Collectors.toList());
         modelAndView.addObject("datePeriods", datePeriods);
@@ -86,8 +76,8 @@ public class StudentController {
     @PostMapping("/teachers/{id}/add")
     public String addConsultation(@PathVariable("id") int id, Long datePeriodId,
                                   Teacher teacher, @AuthenticationPrincipal Student student) {
-        DatePeriod datePeriod = teacherRepository.findDatePeriodById(datePeriodId).orElseThrow();
-        appointmentMaker.makeAppointment(teacher, studentRepository.findById(student.getId()).orElseThrow(), datePeriod);
+        DatePeriod datePeriod = dataForStudent.findDatePeriodById(datePeriodId);
+        appointmentMaker.makeAppointment(teacher, dataForStudent.findStudentById(student.getId()), datePeriod);
         return "redirect:/student/teachers/" + id;
     }
 
@@ -101,7 +91,7 @@ public class StudentController {
 
     @GetMapping("/teachers/find")
     public String findTeacher(Model model) {
-        model.addAttribute("teachers", teacherRepository.findAll());
+        model.addAttribute("teachers", dataForStudent.findAllTeachers());
         return "student/teachers-list";
     }
 

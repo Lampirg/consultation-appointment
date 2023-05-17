@@ -14,6 +14,11 @@ import java.util.Optional;
 @Controller
 public class LoginController {
 
+    @GetMapping({"", "/home"})
+    public String index() {
+        return "index";
+    }
+
     @GetMapping("/student/login")
     public String studentLogin(Model model, HttpServletRequest request, @RequestParam(defaultValue = "false") boolean hasError) {
         formModel(hasError, request, model, "/student/login");

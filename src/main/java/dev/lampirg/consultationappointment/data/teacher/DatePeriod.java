@@ -40,7 +40,7 @@ public class DatePeriod extends AbstractPersistable<Long> {
     @NotNull
     private Duration unoccupiedTime;
 
-    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "appointmentPeriod")
+    @OneToMany(orphanRemoval = true, mappedBy = "appointmentPeriod", fetch = FetchType.EAGER)
     private Set<Appointment> appointments = new HashSet<>();
 
     public DatePeriod(String classroom, LocalDateTime startTime, LocalDateTime endTime) {
@@ -48,19 +48,5 @@ public class DatePeriod extends AbstractPersistable<Long> {
         this.startTime = startTime;
         this.endTime = endTime;
         unoccupiedTime = Duration.between(startTime, endTime);
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        DatePeriod that = (DatePeriod) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
     }
 }

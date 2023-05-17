@@ -13,6 +13,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Aspect
 @Component
@@ -21,15 +24,14 @@ import org.springframework.stereotype.Component;
 public class NotificationAspect {
 
     private EmailService<SimpleMailMessage> emailService;
-    private TeacherRepository teacherRepository;
 
-    public NotificationAspect(EmailService<SimpleMailMessage> emailService, TeacherRepository teacherRepository) {
+    public NotificationAspect(EmailService<SimpleMailMessage> emailService) {
         this.emailService = emailService;
-        this.teacherRepository = teacherRepository;
     }
 
     @After("execution(* dev.lampirg.consultationappointment.service.student.AppointmentMaker.makeAppointment(..)) && " +
             "args(teacher,..,datePeriod)")
+    @Transactional(readOnly = true)
     public void notifyTeacherAboutAppointment(Teacher teacher, DatePeriod datePeriod) {
         if (!datePeriod.getAppointments().isEmpty())
             return;
@@ -50,8 +52,11 @@ public class NotificationAspect {
     }
 
     @After("execution(* dev.lampirg.consultationappointment.service.teacher.ConsultationMaker.deleteConsultation(..))")
-    public void notifyStudentsAboutDeletion(JoinPoint joinPoint) throws Throwable {
+    @Transactional(readOnly = true)
+    public void notifyStudentsAboutDeletion(JoinPoint joinPoint) {
         DatePeriod datePeriod = (DatePeriod) joinPoint.getArgs()[1];
+        if (datePeriod.getEndTime().isBefore(LocalDateTime.now()))
+            return;
         SimpleMailMessage template = new SimpleMailMessage();
         template.setFrom("consultation_service@pgups.example");
         template.setSubject("ПГУПС: запись на консультацию");
