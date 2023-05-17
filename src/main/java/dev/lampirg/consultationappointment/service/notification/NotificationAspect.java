@@ -53,7 +53,7 @@ public class NotificationAspect {
 
     @After("execution(* dev.lampirg.consultationappointment.service.teacher.ConsultationMaker.deleteConsultation(..))")
     @Transactional(readOnly = true)
-    public void notifyStudentsAboutDeletion(JoinPoint joinPoint) throws Throwable {
+    public void notifyStudentsAboutDeletion(JoinPoint joinPoint) {
         DatePeriod datePeriod = (DatePeriod) joinPoint.getArgs()[1];
         if (datePeriod.getEndTime().isBefore(LocalDateTime.now()))
             return;
