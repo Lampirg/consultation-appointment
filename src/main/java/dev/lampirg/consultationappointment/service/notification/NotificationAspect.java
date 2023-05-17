@@ -15,6 +15,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Aspect
 @Component
 @Profile("email")
@@ -53,6 +55,8 @@ public class NotificationAspect {
     @Transactional(readOnly = true)
     public void notifyStudentsAboutDeletion(JoinPoint joinPoint) throws Throwable {
         DatePeriod datePeriod = (DatePeriod) joinPoint.getArgs()[1];
+        if (datePeriod.getEndTime().isBefore(LocalDateTime.now()))
+            return;
         SimpleMailMessage template = new SimpleMailMessage();
         template.setFrom("consultation_service@pgups.example");
         template.setSubject("ПГУПС: запись на консультацию");
