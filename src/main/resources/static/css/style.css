@@ -27,7 +27,8 @@ input[type="text"], input[type="password"] {
 }
 
 a {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
     padding: 10px 20px;
     background-color: #3366ff;
     color: #fff;
@@ -35,8 +36,8 @@ a {
     border-radius: 5px;
 }
 
-nav a:hover {
-	background-color: ##3366f0;
+a:hover {
+	background-color: #33660f;
 }
 
 .login-links {
