@@ -8,8 +8,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableMethodSecurity
-@EnableWebSecurity
 public class PasswordEncoderProvider {
     @Bean
     public PasswordEncoder encoder() {
