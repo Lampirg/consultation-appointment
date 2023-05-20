@@ -33,7 +33,7 @@ public class AutoDeleteConsultationAspect {
         scheduler.schedule(() -> {
             Optional<DatePeriod> freshDatePeriod = teacherRepository.findById(teacher.getId()).orElseThrow().getDatePeriods()
                     .stream()
-                    .filter((teacherDatePeriod) -> teacherDatePeriod.getStartTime().isEqual(datePeriod.getStartTime()) &&
+                    .filter(teacherDatePeriod -> teacherDatePeriod.getStartTime().isEqual(datePeriod.getStartTime()) &&
                             teacherDatePeriod.getEndTime().isEqual(datePeriod.getEndTime()))
                     .findAny();
             if (freshDatePeriod.isPresent() && freshDatePeriod.get().getEndTime().isEqual(datePeriod.getEndTime()))

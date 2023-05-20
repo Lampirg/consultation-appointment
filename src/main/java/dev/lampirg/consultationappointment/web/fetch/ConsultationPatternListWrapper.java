@@ -1,6 +1,7 @@
 package dev.lampirg.consultationappointment.web.fetch;
 
 import lombok.Data;
+
 import java.util.List;
 
 @Data

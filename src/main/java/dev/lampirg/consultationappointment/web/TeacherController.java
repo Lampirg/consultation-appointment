@@ -1,10 +1,10 @@
 package dev.lampirg.consultationappointment.web;
 
-import dev.lampirg.consultationappointment.service.teacher.DataForTeacher;
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import dev.lampirg.consultationappointment.service.teacher.ConsultationMaker;
 import dev.lampirg.consultationappointment.service.teacher.ConsultationScheduler;
+import dev.lampirg.consultationappointment.service.teacher.DataForTeacher;
 import dev.lampirg.consultationappointment.web.fetch.ConsultationInfo;
 import dev.lampirg.consultationappointment.web.fetch.ConsultationPattern;
 import dev.lampirg.consultationappointment.web.fetch.ConsultationPatternListWrapper;

@@ -1,7 +1,5 @@
 package dev.lampirg.consultationappointment;
 
-import dev.lampirg.consultationappointment.data.appointment.AppointmentRepository;
-import dev.lampirg.consultationappointment.data.schedule.PatternSchedule;
 import dev.lampirg.consultationappointment.data.student.Student;
 import dev.lampirg.consultationappointment.data.student.StudentRepository;
 import dev.lampirg.consultationappointment.data.teacher.DatePeriod;

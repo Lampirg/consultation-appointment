@@ -4,7 +4,6 @@ import dev.lampirg.consultationappointment.data.schedule.PatternSchedule;
 import dev.lampirg.consultationappointment.data.schedule.PatternScheduleRepository;
 import dev.lampirg.consultationappointment.data.teacher.Teacher;
 import dev.lampirg.consultationappointment.data.teacher.TeacherRepository;
-import dev.lampirg.consultationappointment.web.fetch.ConsultationPattern;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
