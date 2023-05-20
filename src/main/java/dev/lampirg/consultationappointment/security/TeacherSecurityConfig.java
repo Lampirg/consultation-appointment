@@ -30,7 +30,7 @@ public class TeacherSecurityConfig {
 
 
     @Bean
-    public AuthenticationProvider teacherAuthenticationProvider(UserDetailsService teacherDetailService) throws Exception {
+    public AuthenticationProvider teacherAuthenticationProvider(UserDetailsService teacherDetailService) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(teacherDetailService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);

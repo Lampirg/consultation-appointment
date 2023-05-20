@@ -23,7 +23,7 @@ public class StudentRepositoryTests {
     }
 
     @Test
-    public void testIncorrectGroupName() {
+    void testIncorrectGroupName() {
         Student student = getStudent();
         student.setGroupName("11");
         assertThrows(TransactionSystemException.class, () -> studentRepository.save(student));
@@ -32,19 +32,19 @@ public class StudentRepositoryTests {
     }
 
     @Test
-    public void testFindById() {
+    void testFindById() {
         Student student = studentRepository.save(getStudent());
         Student result = studentRepository.findById(student.getId()).get();
         assertEquals(student.getId(), result.getId());
     }
 
     @Test
-    public void testFindAll() {
+    void testFindAll() {
         Student student = studentRepository.save(getStudent());
         assertEquals(1, studentRepository.findAll().size());
     }
     @Test
-    public void testSave() {
+    void testSave() {
         Student student = studentRepository.save(getStudent());
         Student found = studentRepository.findById(student.getId()).get();
         found.setFirstName("Константин");
@@ -52,7 +52,7 @@ public class StudentRepositoryTests {
         assertEquals(studentRepository.findById(student.getId()).get().getFirstName(), found.getFirstName());
     }
     @Test
-    public void testDelete() {
+    void testDelete() {
         Student student = studentRepository.save(getStudent());
         studentRepository.delete(student);
         assertEquals(0, studentRepository.findAll().size());

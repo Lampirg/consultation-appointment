@@ -31,7 +31,7 @@ public class SchedulesRunner {
     public CommandLineRunner runSchedules() {
         return args -> {
             List<PatternSchedule> schedules = patternScheduleRepository.findAll();
-            schedules.forEach((schedule) -> consultationScheduler.addPattern(schedule.getConsultationPattern()));
+            schedules.forEach(schedule -> consultationScheduler.addPattern(schedule.getConsultationPattern()));
             List<Teacher> teachers = teacherRepository.findAll();
             teachers.forEach(teacher -> teacher.getDatePeriods().forEach(datePeriod -> deleteConsultationAspect.scheduleConsultationDeletion(teacher, datePeriod)));
         };

@@ -44,7 +44,7 @@ public class AppointmentRepositoryTests {
     }
 
     @Test
-    public void testFindById() {
+    void testFindById() {
         Appointment appointment = appointmentRepository.save(getAppointment(studentRepository, teacherRepository));
         Appointment result = appointmentRepository.findById(appointment.getId()).get();
         assertEquals(appointment.getId(), result.getId());

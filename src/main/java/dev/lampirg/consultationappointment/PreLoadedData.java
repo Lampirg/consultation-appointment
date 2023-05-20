@@ -39,7 +39,7 @@ public class PreLoadedData  {
 
     @Bean
     @Order(15)
-    public CommandLineRunner dataLoader() throws Exception {
+    public CommandLineRunner dataLoader() {
         return args -> {
             studentRepository.save(new Student("Василий", "Сакович", "Владиславович", "vasilii@gmail.com", "{noop}qwerty", "ИВБ-911"));
             studentRepository.save(new Student("Георгий", "Васильев", "Анатольевич", "georgii_vas@mail.ru", "{noop}qwerty", "КИБ-113"));
@@ -71,7 +71,7 @@ public class PreLoadedData  {
 
     @Bean
     @Order(25)
-    public CommandLineRunner consultations() throws Exception {
+    public CommandLineRunner consultations() {
         return args -> {
             Teacher teacher = teacherRepository.findByEmail("ivanov@pgups.ru");
             consultationMaker.createConsultation(teacherRepository.findById(teacher.getId()).orElseThrow(), new DatePeriod(

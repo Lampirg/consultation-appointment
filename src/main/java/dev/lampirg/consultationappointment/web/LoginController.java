@@ -45,7 +45,7 @@ public class LoginController {
 
     private void formModel(boolean hasError, HttpServletRequest request, Model model, String attributeValue) {
         if (hasError)
-            getErrorMessage(request).ifPresent((message) -> model.addAttribute("error", message));
+            getErrorMessage(request).ifPresent(message -> model.addAttribute("error", message));
         model.addAttribute("login", attributeValue);
     }
 

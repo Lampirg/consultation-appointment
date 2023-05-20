@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Service
 public class SimpleAppointmentMaker implements AppointmentMaker {
 
-    public final static Duration INTERVAL = Duration.ofMinutes(15);
+    public static final Duration INTERVAL = Duration.ofMinutes(15);
 
     private AppointmentRepository appointmentRepository;
     private StudentRepository studentRepository;
@@ -39,7 +39,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
                 datePeriod.getUnoccupiedTime().minus(INTERVAL)
         );
         appointment = appointmentRepository.save(appointment);
-        studentRepository.findById(appointment.getStudent().getId()).get().getAppointments().add(appointment);
+        studentRepository.findById(appointment.getStudent().getId()).orElseThrow().getAppointments().add(appointment);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class SimpleAppointmentMaker implements AppointmentMaker {
         );
         appointmentRepository.save(appointment);
         appointmentRepository.delete(appointment);
-        studentRepository.findById(appointment.getStudent().getId()).get().getAppointments().remove(appointment);
+        studentRepository.findById(appointment.getStudent().getId()).orElseThrow().getAppointments().remove(appointment);
     }
 
     @Override

@@ -15,7 +15,7 @@ import org.springframework.transaction.TransactionSystemException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class IntegrationTest {
+class IntegrationTest {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -43,7 +43,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void test() {
+    void test() {
         assertEquals(1, studentRepository.findAll().size());
         assertEquals(1, teacherRepository.findAll().size());
         assertEquals(1, appointmentRepository.findAll().size());
@@ -52,13 +52,13 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testDelete() {
+    void testDelete() {
         assertDoesNotThrow(() -> teacherRepository.delete(teacherRepository.findAll().get(0)));
         assertDoesNotThrow(() -> studentRepository.delete(studentRepository.findAll().get(0)));
     }
 
     @Test
-    public void testIncorrectAppointmentBeforeConsultation() {
+    void testIncorrectAppointmentBeforeConsultation() {
         Appointment appointment = appointmentRepository.findAll().get(0);
         appointment.setStartTime(appointment.getAppointmentPeriod().getStartTime().minusMinutes(25));
         assertThrows(TransactionSystemException.class, () -> appointmentRepository.save(appointment));
@@ -67,7 +67,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testIncorrectAppointmentAfterConsultation() {
+    void testIncorrectAppointmentAfterConsultation() {
         Appointment appointment = appointmentRepository.findAll().get(0);
         appointment.setStartTime(appointment.getAppointmentPeriod().getEndTime().plusMinutes(25));
         assertThrows(TransactionSystemException.class, () -> appointmentRepository.save(appointment));
@@ -76,13 +76,13 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testUpdateDatePeriod() {
+    void testUpdateDatePeriod() {
         Appointment appointment = appointmentRepository.findAll().get(0);
         assertEquals(1, appointmentRepository.findAll().get(0).getAppointmentPeriod().getAppointments().size());
     }
 
     @Test
-    public void testDeleteDatePeriod() {
+    void testDeleteDatePeriod() {
         Teacher teacher = teacherRepository.findAll().get(0);
         teacher.getDatePeriods().remove(teacher.getDatePeriods().stream().toList().get(0));
         teacherRepository.save(teacher);

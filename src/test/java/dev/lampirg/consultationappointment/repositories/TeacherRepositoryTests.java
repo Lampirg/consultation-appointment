@@ -23,23 +23,23 @@ public class TeacherRepositoryTests {
     }
 
     @Test
-    public void testDatePeriod() {
+    void testDatePeriod() {
         assertEquals(90, getTeacher().getDatePeriods().stream().toList().get(0).getUnoccupiedTime().toMinutes());
     }
 
     @Test
-    public void testFindById() {
+    void testFindById() {
         Teacher teacher = teacherRepository.save(getTeacher());
         Teacher result = teacherRepository.findById(teacher.getId()).get();
         assertEquals(teacher.getId(), result.getId());
     }
     @Test
-    public void testFindAll() {
+    void testFindAll() {
         Teacher teacher = teacherRepository.save(getTeacher());
         assertEquals(1, teacherRepository.findAll().size());
     }
     @Test
-    public void testSave() {
+    void testSave() {
         Teacher teacher = teacherRepository.save(getTeacher());
         Teacher found = teacherRepository.findById(teacher.getId()).get();
         found.setFirstName("Иннокентий");
@@ -47,7 +47,7 @@ public class TeacherRepositoryTests {
         assertEquals(teacherRepository.findById(teacher.getId()).get().getFirstName(), found.getFirstName());
     }
     @Test
-    public void testDelete() {
+    void testDelete() {
         Teacher teacher = teacherRepository.save(getTeacher());
         teacherRepository.delete(teacher);
         assertEquals(0, teacherRepository.findAll().size());

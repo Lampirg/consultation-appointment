@@ -63,7 +63,7 @@ public class StudentController {
         List<DatePeriod> datePeriods = teacher.getDatePeriods().stream()
                 .filter(datePeriod -> appointmentMaker.isAvailable(teacher, dataForStudent.findStudentById(student.getId()), datePeriod))
                 .sorted(Comparator.comparing(DatePeriod::getStartTime))
-                .collect(Collectors.toList());
+                .toList();
         modelAndView.addObject("datePeriods", datePeriods);
         modelAndView.addObject(teacher);
         return modelAndView;

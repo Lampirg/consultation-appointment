@@ -26,7 +26,7 @@ public class StudentSecurityConfig {
 
 
     @Bean
-    public AuthenticationProvider studentAuthenticationProvider(UserDetailsService studentDetailService) throws Exception {
+    public AuthenticationProvider studentAuthenticationProvider(UserDetailsService studentDetailService) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(studentDetailService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);
