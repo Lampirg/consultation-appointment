@@ -94,9 +94,4 @@ public class StudentController {
         model.addAttribute("teachers", dataForStudent.findAllTeachers());
         return "student/teachers-list";
     }
-
-    @GetMapping("/teachers")
-    public String processFindForm() {
-        return "redirect:/student/teachers/find";
-    }
 }
