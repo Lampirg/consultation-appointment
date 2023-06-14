@@ -13,3 +13,4 @@ The application that was developed as part of my final qualifying work. It repre
 - Spring Security
 - Thymeleaf
 - H2 DBMS
+- Lombok
