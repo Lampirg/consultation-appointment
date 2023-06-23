@@ -1,4 +1,4 @@
-package dev.lavmpirg.consultationappointment
+package dev.lampirg.consultationappointment
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
