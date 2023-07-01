@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Планы консультаций</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{header :: teacher}"></div>
+<table class="table table-striped">
+    <tr>
+        <th>Начиная с:</th>
+        <th>До</th>
+        <th>День недели</th>
+        <th>Кабинет</th>
+        <th>Начало</th>
+        <th>Конец</th>
+    </tr>
+    <tr th:each="pattern,iterStat : ${form.patterns}">
+        <td th:text="${#temporals.format(pattern.consultationInfo.date, 'dd.MM.yy')}"></td>
+        <td th:text="${#temporals.format(pattern.until, 'dd.MM.yy')}"></td>
+        <td th:text="${#temporals.dayOfWeekName(pattern.consultationInfo.date)}"></td>
+        <td th:text="${pattern.consultationInfo.classroom}"></td>
+        <td th:text="${#temporals.format(pattern.consultationInfo.startTime, 'HH:mm')}"></td>
+        <td th:text="${#temporals.format(pattern.consultationInfo.endTime, 'HH:mm')}"></td>
+        <td>
+            <form th:action="@{/teacher/pattern/delete}" method="post">
+                <input type="hidden" th:value="${iterStat.index}" id="index" name="index"/>
+                <button type="submit">Отменить план</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

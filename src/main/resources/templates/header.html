@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Фрагменты</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:fragment="teacher" class="login-links">
+    <a href="/teacher/profile">Профиль</a>
+    <a href="/teacher/logout">Выход</a>
+</nav>
+<nav th:fragment="student" class="login-links">
+    <a href="/student/profile">Профиль</a>
+    <a href="/student/teachers/find">Запись на консультацию</a>
+    <a href="/student/logout">Выход</a>
+</nav>
+</body>
+</html>

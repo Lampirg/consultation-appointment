@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Записаться на консультацию</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{header :: student}"></div>
+<h>Выберите день консультации</h>
+<table class="table table-striped">
+    <tr>
+        <th>Кабинет</th>
+        <th>Дата</th>
+        <th>Начало</th>
+        <th>Конец</th>
+    </tr>
+    <form th:each="datePeriod : ${datePeriods}" th:action="@{/student/teachers/__${teacher.id}__/add}"
+          id="datePeriod" name="datePeriod" method="post">
+        <tr>
+            <td th:text="${datePeriod.classroom}"></td>
+            <td th:text="${#temporals.format(datePeriod.startTime, 'dd.MM.yy')}"></td>
+            <td th:text="${#temporals.format(datePeriod.startTime, 'HH:mm')}"></td>
+            <td th:text="${#temporals.format(datePeriod.endTime, 'HH:mm')}"></td>
+            <td>
+                <input type="hidden" th:value="${datePeriod.id}" id="datePeriodId" name="datePeriodId"/>
+                <button type="submit">Записаться на консультацию</button>
+            </td>
+        </tr>
+    </form>
+
+</table>
+</body>
+</html>

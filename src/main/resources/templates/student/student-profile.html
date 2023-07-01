@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{header :: student}"></div>
+<h1>Назначенные консультации</h1>
+<table class="table table-striped">
+    <tr>
+        <th>Дата</th>
+        <th>Начало</th>
+        <th>Конец</th>
+        <th>Преподаватель</th>
+        <th>Кабинет</th>
+    </tr>
+    <tr th:each="appointment : ${appointments}">
+        <td th:text="${#temporals.format(appointment.appointmentPeriod.startTime, 'dd.MM.yy')}"></td>
+        <td th:text="${#temporals.format(appointment.appointmentPeriod.startTime, 'HH:mm')}"></td>
+        <td th:text="${#temporals.format(appointment.appointmentPeriod.endTime, 'HH:mm')}"></td>
+        <td th:text="${appointment.teacher.lastName + ' ' + appointment.teacher.firstName + ' ' + appointment.teacher.patronymic}"></td>
+        <td th:text="${appointment.appointmentPeriod.classroom}"></td>
+        <td>
+            <form th:action="@{/student/appointments/__${appointment.id}__/delete}" method="post">
+                <button type="submit">Отменить запись на консультацию</button>
+            </form>
+        </td>
+    </tr>
+
+</table>
+</body>
+</html>
