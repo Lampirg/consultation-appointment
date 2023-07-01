@@ -27,11 +27,6 @@ public class StudentController {
         this.appointmentMaker = appointmentMaker;
     }
 
-    @ModelAttribute("teacher")
-    public Teacher findTeacher(@PathVariable(name = "id", required = false) Integer id) {
-        return id == null ? new Teacher() : dataForStudent.findTeacherById(id);
-    }
-
     @GetMapping("/profile")
     public String getStudentProfile(@AuthenticationPrincipal Student student, Model model) {
         student = dataForStudent.findStudentById(student.getId());
@@ -71,9 +66,9 @@ public class StudentController {
 
     @PostMapping("/teachers/{id}/add")
     public String addConsultation(@PathVariable("id") int id, Long datePeriodId,
-                                  Teacher teacher, @AuthenticationPrincipal Student student) {
+                                  @AuthenticationPrincipal Student student) {
         DatePeriod datePeriod = dataForStudent.findDatePeriodById(datePeriodId);
-        appointmentMaker.makeAppointment(teacher, dataForStudent.findStudentById(student.getId()), datePeriod);
+        appointmentMaker.makeAppointment(dataForStudent.findTeacherById(id), dataForStudent.findStudentById(student.getId()), datePeriod);
         return "redirect:/student/teachers/" + id;
     }
 
