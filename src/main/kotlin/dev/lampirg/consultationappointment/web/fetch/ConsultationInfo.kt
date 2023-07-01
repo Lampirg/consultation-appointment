@@ -16,4 +16,6 @@ class ConsultationInfo(
     var startTime: LocalTime,
     @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     var endTime: LocalTime
-)
+) {
+    constructor() : this(LocalDate.MIN, "", LocalTime.MIN, LocalTime.MIN)
+}

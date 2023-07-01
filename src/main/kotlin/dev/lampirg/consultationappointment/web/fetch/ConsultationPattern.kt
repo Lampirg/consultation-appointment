@@ -14,8 +14,10 @@ class ConsultationPattern(
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     var until: LocalDate,
     var fromDate: LocalDate,
-    val consultationInfo: ConsultationInfo,
+    var consultationInfo: ConsultationInfo,
     @ManyToOne
     @JoinColumn(name = "teacher_id")
-    val teacher: Teacher
-)
+    var teacher: Teacher? = null
+) {
+    constructor() : this(LocalDate.MIN, LocalDate.MIN, ConsultationInfo())
+}

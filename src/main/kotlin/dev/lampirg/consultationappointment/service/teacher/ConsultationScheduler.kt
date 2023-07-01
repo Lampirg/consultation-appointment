@@ -52,7 +52,7 @@ class ConsultationScheduler @Autowired constructor(
     fun addPattern(pattern: ConsultationPattern) {
         while (pattern.consultationInfo.date.isBefore(LocalDate.now()))
             pattern.consultationInfo.date = pattern.consultationInfo.date.plusDays(7)
-        patternsMap.putIfAbsent(pattern.teacher.id, ArrayList<ConsultationPattern>())
+        patternsMap.putIfAbsent(pattern.teacher!!.id, ArrayList<ConsultationPattern>())
         val instant = LocalDateTime.of(
             pattern.consultationInfo.date,
             pattern.consultationInfo.endTime
@@ -70,9 +70,9 @@ class ConsultationScheduler @Autowired constructor(
                     pattern.consultationInfo.endTime
                 )
             )
-            consultationMaker.createConsultation(pattern.teacher, datePeriod)
+            consultationMaker.createConsultation(pattern.teacher!!, datePeriod)
         }, instant, Duration.ofDays(7))
-        patternsMap[pattern.teacher.id]!!.add(pattern)
+        patternsMap[pattern.teacher!!.id]!!.add(pattern)
         schedulesMap[pattern] = Pair(future)
         scheduleRemove(pattern)
     }
@@ -89,7 +89,7 @@ class ConsultationScheduler @Autowired constructor(
             )
         })
         schedulesMap.remove(pattern)
-        patternsMap[pattern.teacher.id]!!.remove(pattern)
+        patternsMap[pattern.teacher!!.id]!!.remove(pattern)
         patternScheduleRepository.delete(patternScheduleMap[pattern]!!)
         patternScheduleMap.remove(pattern)
     }
