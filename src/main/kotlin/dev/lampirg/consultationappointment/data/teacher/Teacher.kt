@@ -24,9 +24,9 @@ open class Teacher(
     email: String,
     password: String,
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
-    var datePeriods: MutableSet<DatePeriod> = mutableSetOf(),
+    open var datePeriods: MutableSet<DatePeriod> = mutableSetOf(),
     @OneToMany(mappedBy = "teacher")
-    val appointments: MutableSet<Appointment> = mutableSetOf()
+    open val appointments: MutableSet<Appointment> = mutableSetOf()
 ) :
     Person(firstName, lastName, patronymic, email, password) {
 

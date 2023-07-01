@@ -18,11 +18,11 @@ import java.time.LocalDateTime
 @Setter
 @ToString
 @NoArgsConstructor
-class DatePeriod(
-    var classroom: String,
-    var startTime: LocalDateTime,
-    var endTime: LocalDateTime,
-    var unoccupiedTime: Duration = Duration.between(startTime, endTime),
+open class DatePeriod(
+    open var classroom: String,
+    open var startTime: LocalDateTime,
+    open var endTime: LocalDateTime,
+    open var unoccupiedTime: Duration = Duration.between(startTime, endTime),
     @OneToMany(orphanRemoval = true, mappedBy = "appointmentPeriod", fetch = FetchType.EAGER)
-    var appointments: Set<Appointment> = HashSet()
+    open var appointments: MutableSet<Appointment> = HashSet()
 ) : AbstractPersistable<Long>()

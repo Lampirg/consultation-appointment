@@ -12,10 +12,10 @@ import lombok.Setter
 @Getter
 @Setter
 @NoArgsConstructor
-class PatternSchedule(
-    val consultationPattern: ConsultationPattern
+open class PatternSchedule(
+    open val consultationPattern: ConsultationPattern
 ) {
     @Id
     @GeneratedValue
-    var id: Long? = null
+    open var id: Long? = null
 }
