@@ -33,8 +33,8 @@ class TeacherController @Autowired constructor(
         var teacher = teacher
         teacher = dataForTeacher.findTeacherById(teacher.id!!)
         model.addAttribute("teacher", teacher)
-        val datePeriods: List<DatePeriod> = ArrayList(teacher.datePeriods)
-        datePeriods.sortedWith(Comparator.comparing(DatePeriod::startTime))
+        val datePeriods: MutableList<DatePeriod> = ArrayList(teacher.datePeriods)
+        datePeriods.sortWith(Comparator.comparing(DatePeriod::startTime))
         model.addAttribute("consultations", datePeriods)
         return "teacher/teacher-profile"
     }

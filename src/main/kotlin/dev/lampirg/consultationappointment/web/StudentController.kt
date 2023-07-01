@@ -25,8 +25,8 @@ class StudentController @Autowired constructor(
         var student = student
         student = dataForStudent.findStudentById(student.id!!)
         model.addAttribute("student", student)
-        val appointments: List<Appointment> = ArrayList(student.appointments)
-        appointments.sortedWith(Comparator.comparing(Appointment::startTime))
+        val appointments: MutableList<Appointment> = ArrayList(student.appointments)
+        appointments.sortWith(Comparator.comparing(Appointment::startTime))
         model.addAttribute("appointments", appointments)
         return "student/student-profile"
     }
@@ -42,8 +42,8 @@ class StudentController @Autowired constructor(
             ).appointments
         )
         appointments.retainAll(teacher.appointments)
-        val appointmentList: List<Appointment> = ArrayList(appointments)
-        appointmentList.sortedWith(Comparator.comparing(Appointment::startTime))
+        val appointmentList: MutableList<Appointment> = ArrayList(appointments)
+        appointmentList.sortWith(Comparator.comparing(Appointment::startTime))
         modelAndView.addObject("appointments", appointmentList)
         return modelAndView
     }
