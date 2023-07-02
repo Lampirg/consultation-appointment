@@ -14,3 +14,4 @@ The application that was developed as part of my final qualifying work. It repre
 - Thymeleaf
 - H2 DBMS
 - Lombok
+- Kotlin (see [Kotlin branch](https://github.com/Lampirg/consultation-appointment/tree/kotlin))
