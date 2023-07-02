@@ -10,15 +10,16 @@ import org.springframework.scheduling.TaskScheduler
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.*
+import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.ScheduledFuture
 import java.util.function.Consumer
 
 @Service
 class ConsultationScheduler @Autowired constructor(
-    patternScheduleRepository: PatternScheduleRepository,
-    consultationMaker: ConsultationMaker,
-    scheduler: TaskScheduler
+    private val patternScheduleRepository: PatternScheduleRepository,
+    private val consultationMaker: ConsultationMaker,
+    private val scheduler: TaskScheduler
 ) {
     private class Pair(var start: ScheduledFuture<*>) {
         var end: ScheduledFuture<*>? = null
@@ -27,20 +28,12 @@ class ConsultationScheduler @Autowired constructor(
             get() = listOf(start, end)
     }
 
-    private val patternScheduleRepository: PatternScheduleRepository
-    private val consultationMaker: ConsultationMaker
-    private val scheduler: TaskScheduler
     private val patternsMap: MutableMap<Int?, MutableList<ConsultationPattern>> =
         HashMap<Int?, MutableList<ConsultationPattern>>()
     private val schedulesMap: MutableMap<ConsultationPattern, Pair> = HashMap<ConsultationPattern, Pair>()
     private val patternScheduleMap: MutableMap<ConsultationPattern, PatternSchedule> =
         HashMap<ConsultationPattern, PatternSchedule>()
 
-    init {
-        this.patternScheduleRepository = patternScheduleRepository
-        this.consultationMaker = consultationMaker
-        this.scheduler = scheduler
-    }
 
     @Transactional
     fun savePattern(pattern: ConsultationPattern) {
@@ -50,6 +43,8 @@ class ConsultationScheduler @Autowired constructor(
     }
 
     fun addPattern(pattern: ConsultationPattern) {
+        pattern.consultationInfo.startTime = pattern.consultationInfo.startTime.truncatedTo(ChronoUnit.MINUTES)
+        pattern.consultationInfo.startTime = pattern.consultationInfo.startTime.truncatedTo(ChronoUnit.MINUTES)
         while (pattern.consultationInfo.date.isBefore(LocalDate.now()))
             pattern.consultationInfo.date = pattern.consultationInfo.date.plusDays(7)
         patternsMap.putIfAbsent(pattern.teacher!!.id, ArrayList<ConsultationPattern>())
@@ -83,11 +78,9 @@ class ConsultationScheduler @Autowired constructor(
 
     @Transactional
     fun removePattern(pattern: ConsultationPattern) {
-        schedulesMap[pattern]!!.all.forEach(Consumer { future: ScheduledFuture<*>? ->
-            future!!.cancel(
-                false
-            )
-        })
+        schedulesMap[pattern]!!.all.forEach { future: ScheduledFuture<*>? ->
+            future?.cancel(false)
+        }
         schedulesMap.remove(pattern)
         patternsMap[pattern.teacher!!.id]!!.remove(pattern)
         patternScheduleRepository.delete(patternScheduleMap[pattern]!!)
@@ -97,6 +90,6 @@ class ConsultationScheduler @Autowired constructor(
     private fun scheduleRemove(pattern: ConsultationPattern) {
         val instant = LocalDateTime.of(pattern.until, LocalTime.MAX)
             .atZone(ZoneId.of("Europe/Moscow")).toInstant()
-        scheduler.schedule({ removePattern(pattern) }, instant)
+        schedulesMap[pattern]!!.end = scheduler.schedule({ removePattern(pattern) }, instant)
     }
 }
